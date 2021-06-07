@@ -228,7 +228,7 @@ table, th, td
 
     if(maleg === 'bifo'){
     
-    mmxlayer = new L.tileLayer.wms('https://communitygis.net/geoserver/geonode/ows', {
+    mmxlayer = new L.tileLayer.wms('https://geonode.communitygis.net/geoserver/geonode/ows', {
 
     layers: 'geonode:inst_bifocals_4may2020',
     format: 'image/png',
@@ -239,7 +239,7 @@ table, th, td
     mmxlayer.addTo(mymap);
     addWMSLegend(mmxlayer.options.layers);
 
-    LAYER = "https://communitygis.net/geoserver/geonode/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS="+mmxlayer.options.layers+"&QUERY_LAYERS="+mmxlayer.options.layers;
+    LAYER = "https://geonode.communitygis.net/geoserver/geonode/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS="+mmxlayer.options.layers+"&QUERY_LAYERS="+mmxlayer.options.layers;
     LayerList.push(mmxlayer);
 
 
@@ -371,7 +371,7 @@ var districtZoom = [7,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
 
 var LayerList = [];
 
-const domain = ['https://communitygis.net/','http://localhost/'];
+const domain = ['https://geonode.communitygis.net/','http://localhost/'];
 
 var rootUrl = domain[0] + 'geoserver/geonode/ows';
 
@@ -966,7 +966,7 @@ let listState = {
                                     var distLayerLatLong = listDistrict[aspiD];
                                     //clear_layer();
                                     //console.log('kk',distLayerLatLong);
-                                    var wms_layer = L.tileLayer.wms('https://communitygis.net/geoserver/wms', {
+                                    var wms_layer = L.tileLayer.wms('https://geonode.communitygis.net/geoserver/wms', {
                                         layers: 'geonode:maha_taluka_13March2021',
                                         format: 'image/png',
                                         transparent: 'true',
@@ -994,7 +994,7 @@ let listState = {
                                     //console.log(indstate);
                                     var stLayerLatLong = listState[indstate];
 
-                                    var wms_layer = L.tileLayer.wms('https://communitygis.net/geoserver/wms', {
+                                    var wms_layer = L.tileLayer.wms('https://geonode.communitygis.net/geoserver/wms', {
                                         layers: 'geonode:states_in_india',
                                         format: 'image/png',
                                         transparent: 'true',
@@ -1030,7 +1030,7 @@ let listState = {
                                     if (state == "Chhattisgarh") {
                                         layers = 'geonode:all_india_districts_11june2020';
                                     }
-                                    var wms_layer = L.tileLayer.wms('https://communitygis.net/geoserver/wms', {
+                                    var wms_layer = L.tileLayer.wms('https://geonode.communitygis.net/geoserver/wms', {
                                         layers: layers,
                                         format: 'image/png',
                                         transparent: 'true',
@@ -1064,7 +1064,7 @@ let listState = {
                                     var dist = document.getElementById('district').value;
                                     var taluka = document.getElementById('block_s').value;
 
-                                    var wms_layer = L.tileLayer.wms('https://communitygis.net/geoserver/wms', {
+                                    var wms_layer = L.tileLayer.wms('https://geonode.communitygis.net/geoserver/wms', {
                                         layers: "geonode:maha_taluka_13march2021",
                                         cql_filter: "taluka_nam='" + taluka + "'",
                                         cql_filter: `taluka_nam='${taluka}' AND distname='${dist}'`,
@@ -1094,7 +1094,7 @@ let listState = {
                                     var taluka = document.getElementById('block_s');
                                     var pincode = document.getElementById('pincode').value;
 
-                                    var wms_layer = L.tileLayer.wms('https://communitygis.net/geoserver/wms', {
+                                    var wms_layer = L.tileLayer.wms('https://geonode.communitygis.net/geoserver/wms', {
                                         layers: "geonode:india_pincodes_12june",
                                         cql_filter: "pincode='" + pincode + "'",
                                         cql_filter: `pincode='${pincode}' AND district='${district}'`,
@@ -1127,7 +1127,7 @@ let listState = {
                                         mymap.removeLayer(area);
                                     }
                                     // let rootUrl = '{{site_url}}geoserver/geonode/ows';
-                                    let rootUrl = 'https://communitygis.net/geoserver/geonode/ows';
+                                    let rootUrl = 'https://geonode.communitygis.net/geoserver/geonode/ows';
                                     let options = {
                                         service: 'WFS',
                                         version: '1.0.0',
@@ -1178,7 +1178,7 @@ let listState = {
 
                                 //this function is for state boundary
                                 function putWMS(layer) {
-                                    var wms_layer = L.tileLayer.wms('https://communitygis.net/geoserver/wms', {
+                                    var wms_layer = L.tileLayer.wms('https://geonode.communitygis.net/geoserver/wms', {
                                         layers: layer,
                                         format: 'image/png',
                                         transparent: 'true',
@@ -1191,7 +1191,7 @@ let listState = {
                                     }
                                     //console.log(wms_legend); 
                                     addWMSLegend(layer);
-                                    TRIBLAYER = "https://communitygis.net/geoserver/geonode/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + wms_layer.options.layers + "&QUERY_LAYERS=" + wms_layer.options.layers;
+                                    TRIBLAYER = "https://geonode.communitygis.net/geoserver/geonode/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=" + wms_layer.options.layers + "&QUERY_LAYERS=" + wms_layer.options.layers;
 
 
                                 }

@@ -36,9 +36,9 @@
 	var grayscale   = L.tileLayer(mbUrl, {id: 'mapbox/light-v9', tileSize: 512, zoomOffset: -1, attribution: mbAttr}),
         streets  = L.tileLayer(mbUrl, {id: 'mapbox/streets-v11', tileSize: 512, zoomOffset: -1, attribution: mbAttr});
         
-    // const url = 'https://communitygis.net/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=json&typename=geonode:diet_data8jan';
-    const url = 'https://communitygis.net/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typename=geonode%3Aposhan_dummy&outputFormat=json&srs=EPSG%3A4326&srsName=EPSG%3A4326&access_token=3r7XCeWunHUOfoyqPxnUNt7XY7ZWHu'
-    const url1 = 'https://communitygis.net/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typename=geonode%3AOrganization_wise_Compendium&outputFormat=json&srs=EPSG%3A4326&srsName=EPSG%3A4326&access_token=3r7XCeWunHUOfoyqPxnUNt7XY7ZWHu'
+    // const url = 'https://geonode.communitygis.net/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&outputFormat=json&typename=geonode:diet_data8jan';
+    const url = 'https://geonode.communitygis.net/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typename=geonode%3Aposhan_dummy&outputFormat=json&srs=EPSG%3A4326&srsName=EPSG%3A4326&access_token=3r7XCeWunHUOfoyqPxnUNt7XY7ZWHu'
+    const url1 = 'https://geonode.communitygis.net/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typename=geonode%3AOrganization_wise_Compendium&outputFormat=json&srs=EPSG%3A4326&srsName=EPSG%3A4326&access_token=3r7XCeWunHUOfoyqPxnUNt7XY7ZWHu'
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 		maxZoom: 18,
@@ -53,7 +53,7 @@
 		"Grayscale": grayscale,
 		"Streets": streets
     };
-    let indiaState = L.tileLayer.wms("https://communitygis.net/geoserver/wms", {
+    let indiaState = L.tileLayer.wms("https://geonode.communitygis.net/geoserver/wms", {
             layers: "geonode:states_in_india",
             format: "image/png",
             transparent: "true",
@@ -61,7 +61,7 @@
             opacity: 0.7,
             }
         );
-    let indiaDistrict = L.tileLayer.wms("https://communitygis.net/geoserver/wms", {
+    let indiaDistrict = L.tileLayer.wms("https://geonode.communitygis.net/geoserver/wms", {
         layers: "geonode:all_india_districts_11june2020",
         format: "image/png",
         transparent: "true",
@@ -70,7 +70,7 @@
         }
     );
 
-    let mahaHighways = L.tileLayer.wms("https://communitygis.net/geoserver/wms", {
+    let mahaHighways = L.tileLayer.wms("https://geonode.communitygis.net/geoserver/wms", {
         layers: "geonode:osm_highways",
         format: "image/png",
         transparent: "true",
@@ -79,7 +79,7 @@
         }
     );
 
-    let mahaSchools = L.tileLayer.wms("https://communitygis.net/geoserver/wms", {
+    let mahaSchools = L.tileLayer.wms("https://geonode.communitygis.net/geoserver/wms", {
         layers: "geonode:school_16_17_11april",
         format: "image/png",
         transparent: "true",
