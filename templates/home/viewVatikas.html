@@ -4,7 +4,6 @@
 
 {% endblock %}
 {% load i18n %}
-{% load socialaccount %}
 {% load has_group %}
 
 {% get_current_language as LANGUAGE_CODE %}
@@ -13,48 +12,89 @@
 {% block map %}
 
 <style>
- .open-button {
-    display: none; /* Initially hide the hamburger icon */
-}
+  .open-button {
+      display: none; /* Initially hide the hamburger icon */
+  }
 
-/* Media query for mobile devices */
-@media screen and (max-width: 600px) {
-    #side-bar {
-        display: none; /* Hide the sidebar for mobile devices */
-    }
+  /* Media query for mobile devices */
+  @media screen and (max-width: 600px) {
+      #side-bar {
+          display: none; /* Hide the sidebar for mobile devices */
+      }
 
-    .open-button {
-        display: inline-block; /* Display the hamburger icon for mobile devices */
-    }
-}
-select {
-    /* Reset any styles that might affect the visibility */
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    /* Ensure the dropdown is visible */
-    visibility: visible;
-    display: block;
-}
+      .open-button {
+          display: inline-block; /* Display the hamburger icon for mobile devices */
+      }
 
-    /* Style the legend */
-    #legend {
-        position: absolute;
-        bottom: 50px;
-        right: 10px;
-        background-color: white;
-        padding: 10px;
-        border-radius: 5px;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.3);
-    }
-    #legend h4 {
-        margin-top: 0;
-    }
-    #legend div {
-        margin-bottom: 5px;
-    }
+      #mapid {
+          width: 100%;
+          height: calc(100vh - 50px); /* Adjust height to accommodate other elements */
+      }
+
+      #legend {
+          bottom: 10px;
+          right: 10px;
+          width: calc(100% - 20px); /* Adjust width to avoid overflow */
+          position: fixed;
+          /* Adjust position for better visibility on mobile */
+      }
+  }
+
+  /* Media query for tablets and larger screens */
+  @media screen and (min-width: 601px) {
+      #side-bar {
+          width: 250px; /* Set a fixed width for larger screens */
+          height: 100vh;
+          overflow-y: auto;
+          margin-left: 0;
+          border-style: none;
+          display: block;
+      }
+
+      #mapid {
+          width: calc(100% - 250px); /* Adjust width to accommodate the sidebar */
+          height: 100vh;
+          float: right;
+      }
+
+      #legend {
+          position: absolute;
+          bottom: 50px;
+          right: 10px;
+          width: auto;
+          /* Adjust width for larger screens */
+      }
+  }
+
+  select {
+      /* Reset any styles that might affect the visibility */
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      /* Ensure the dropdown is visible */
+      visibility: visible;
+      display: block;
+  }
+
+  /* Style the legend */
+  #legend {
+      position: absolute;
+      bottom: 50px;
+      right: 10px;
+      background-color: white;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  }
+  #legend h4 {
+      margin-top: 0;
+  }
+  #legend div {
+      margin-bottom: 5px;
+  }
 
 </style>
+
 <!-- <script src="https://unpkg.com/leaflet-pancontrol"></script> -->
 
 <!-- <button class="openbtn" onclick="openNav()">Open/Close <span class="open-button"></span></button> -->
@@ -67,82 +107,59 @@ select {
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<div id ="container" style="display: flex;height: 100vh;width:100%;">
-  <div id = "side-bar" style="width: auto;height:80vh;float: left;overflow-y: auto;margin-left: 1px;border-style: double;" >
-    <!-- <div style="text-align: center">
-      <button style="display: inline-block ;position: relative; background: #000; opacity: 0.60;" id="closebutton"
-        name="closebutton" class="btn btn-secondary" onclick="toggleme()"><span class="fa fa-bars"></span></button>
-    </div> -->
-    <ul id="mobile-nav" style="z-index: 9999999;">
-    
-    <br>
-
-    {% if user.is_authenticated %}
-    <li ><a class="subheader" > {% trans "USER AUTHENTICATION" %} - {{user.username}} </a></li>
-    <li><a href="{% url 'logout' %}" class="custom-link">{% trans "Logout" %}</a></li>
-    {% else %}
-    <li ><a class="subheader" > {% trans "USER AUTHENTICATION" %} - Guest </a></li>
-    <li><a href="{% url 'login' %}" class="custom-link">{% trans "Login" %}</a></li>
-    <li><a href="{% url 'register' %}" class="custom-link">{% trans "Register" %}</a></li>
-    {% endif %}
-
-    <li>
-      <div class="divider"></div>
-    </li>
-    <br><li ><a class="subheader" > {% trans "DATA CONTRIBUTION AND FORMS" %} </a></li>
-    
-    
-    <li><a href="https://ee.kobotoolbox.org/x/vHVD3HnV" class="custom-link">{% trans "PoshanVaitka Form" %}</a> </li>
-    <li><a href="{% url 'captvatikapic'%}" class="custom-link">{% trans "Capture PoshanVatikas" %}</a></li>
-    <!-- <li><a href="http://ee.communitygis.net/x/RWF4D9SR" class="waves-effect">Vistrit Mahiti(Marathi Form)</a></li> -->
-    <li><a href="{% url 'captwellpic'%}" class="custom-link">{% trans "Capture Wells" %}</a></li>
-    
-    <li><a href="{% url 'captseedpic'%}" class="custom-link">{% trans "Capture Seed" %}</a></li>
-    <li><a href="{% url 'viewVatikas'%}" class="custom-link">{% trans "View All PoshanVatikas" %}</a></li>
-    {% if user.is_authenticated and user|has_group:"MWCD officials" %}
-    <li><a href="{% url 'viewSarkariVatikas'%}" class="custom-link" id ="view-sarkari-vatikas">{% trans "View MWCD PoshanVatikas" %}</a></li>
-    {% endif %}
-    <li><a href="{% url 'viewAFIFVatikas'%}" class="custom-link">{% trans "View AFIF PoshanVatikas" %}</a></li>
-    
-    <li><a href="{% url 'well_info'%}" class="custom-link">{% trans "View Wells Data" %}</a></li>
-    <li><a href="{% url 'viewWells'%}" class="custom-link" >{% trans "View Wells" %}</a></li>
-    {% if user.is_authenticated %}
-    <li><a href="{% url 'archive' %}" class="custom-link" ><b>{% trans "Archived PoshanVatikas" %}</b></a></li>
-    
-    {% endif %}
-    <br><li>
-      <div class="divider"></div>
-    </li>
-    <li><a class="subheader">{% trans "POSHANVATIKA" %}</a></li>
-    <!-- <li><a href="{% url 'heir_map' %}" class="custom-link">Map</a></li> -->
-    <li><a href="{% url 'news' %}"  class="custom-link">{% trans "Reports(coming soon..)" %}</a></li>
-    <!-- <li><a href="/pages/resources" class="waves-effect">Resources</a></li> -->
-    <li><a href="{% url 'news' %}" class="custom-link">{% trans "Feedback(coming soon..)" %}</a></li>
-    
-   
-    </ul> 
+<div id="container" style="display: flex; height: 100vh; width: 100%;">
+  <div id="side-bar">
+    <!-- Sidebar content here -->
+    <ul id="mobile-nav">
+      <br>
+      {% if user.is_authenticated %}
+      <li><a class="subheader">{% trans "USER AUTHENTICATION" %} - {{user.username}}</a></li>
+      <li><a href="{% url 'logout' %}" class="custom-link">{% trans "Logout" %}</a></li>
+      {% else %}
+      <li><a class="subheader">{% trans "USER AUTHENTICATION" %} - Guest</a></li>
+      <li><a href="{% url 'login' %}" class="custom-link">{% trans "Login" %}</a></li>
+      <li><a href="{% url 'register' %}" class="custom-link">{% trans "Register" %}</a></li>
+      {% endif %}
+      <li><div class="divider"></div></li>
+      <br>
+      <li><a class="subheader">{% trans "DATA CONTRIBUTION AND FORMS" %}</a></li>
+      <li><a href="https://ee.kobotoolbox.org/x/vHVD3HnV" class="custom-link">{% trans "PoshanVaitka Form" %}</a></li>
+      <li><a href="{% url 'captvatikapic'%}" class="custom-link">{% trans "Capture PoshanVatikas" %}</a></li>
+      <li><a href="{% url 'captwellpic'%}" class="custom-link">{% trans "Capture Wells" %}</a></li>
+      <li><a href="{% url 'captseedpic'%}" class="custom-link">{% trans "Capture Seed" %}</a></li>
+      <li><a href="{% url 'viewVatikas'%}" class="custom-link">{% trans "View All PoshanVatikas" %}</a></li>
+      {% if user.is_authenticated and user|has_group:"MWCD officials" %}
+      <li><a href="{% url 'viewSarkariVatikas'%}" class="custom-link" id="view-sarkari-vatikas">{% trans "View MWCD PoshanVatikas" %}</a></li>
+      {% endif %}
+      <li><a href="{% url 'viewAFIFVatikas'%}" class="custom-link">{% trans "View AFIF PoshanVatikas" %}</a></li>
+      <li><a href="{% url 'well_info'%}" class="custom-link">{% trans "View Wells Data" %}</a></li>
+      <li><a href="{% url 'viewWells'%}" class="custom-link">{% trans "View Wells" %}</a></li>
+      {% if user.is_authenticated %}
+      <li><a href="{% url 'archive' %}" class="custom-link"><b>{% trans "Archived PoshanVatikas" %}</b></a></li>
+      {% endif %}
+      <br>
+      <li><div class="divider"></div></li>
+      <li><a class="subheader">{% trans "POSHANVATIKA" %}</a></li>
+      <li><a href="{% url 'news' %}" class="custom-link">{% trans "Reports(coming soon..)" %}</a></li>
+      <li><a href="{% url 'news' %}" class="custom-link">{% trans "Feedback(coming soon..)" %}</a></li>
+    </ul>
   </div>
-  <div id="mapid" style="width: auto;flex: 1;">
-    
+  <div id="mapid">
+    <!-- Map content here -->
   </div>
-  <div id="legend" class="leaflet-control leaflet-control-custom"><centre><b>Statistics</b></centre><br>
-    
-      
+  <div id="legend" class="leaflet-control leaflet-control-custom">
+    <center><b>Statistics</b></center><br>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-    
     <!-- Tab navigation -->
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item">
         <a class="nav-link" id="poshna-tab" data-toggle="tab" href="#poshna" role="tab" aria-controls="poshna" aria-selected="true">All PoshnaVatikas</a>
       </li>
-     
       <li class="nav-item">
         <a class="nav-link active" id="afif-tab" data-toggle="tab" href="#afif" role="tab" aria-controls="afif" aria-selected="false">AFIF</a>
       </li>
-      
     </ul>
-    
     <!-- Tab content -->
     <div class="tab-content" id="myTabContent">
       <!-- AFIF tab -->
@@ -154,7 +171,6 @@ select {
           {% endfor %}
         </ul>
       </div>
-      
       <!-- PoshnaVatikas tab -->
       <div class="tab-pane fade" id="poshna" role="tabpanel" aria-labelledby="poshna-tab">
         {% if is_view_Vatikas %}
@@ -169,13 +185,14 @@ select {
     </div>
   </div>
 </div>
-  <!-- Modal Structure -->
-  <div id="demo-modal" class="modal bottom-sheet"> 
-    <div id="content" class="modal-content"> 
-    </div> 
-    <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
-      </div>
+
+<!-- Modal Structure -->
+<div id="demo-modal" class="modal bottom-sheet"> 
+  <div id="content" class="modal-content"> 
+  </div> 
+  <div class="modal-footer">
+    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+  </div>
 </div> 
 
 <div id="demo-modal1" class="modal bottom-sheet"> 
@@ -184,12 +201,13 @@ select {
   </div>
   <div id="content1" class="modal-content"> 
   </div> 
-  
 </div> 
 
 <!-- <div id="hamburger-icon" class="open-button" onclick="toggleSidebar()">
   <span class="fa fa-bars"></span>
 </div> -->
+
+
 
 <script>
 
@@ -222,7 +240,7 @@ select {
     // }).addTo(mymap);
     
     // console.log('l/tilelayer');
-    var wms = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/wms', {
+    var wms = L.tileLayer.wms('https://dilrmp-jk.communitygis.in/geoserver/geonode/wms', {
 				//layer: layer,
         layers: 'geonode:states_in_india',
 				format: 'image/png',
