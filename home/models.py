@@ -13,7 +13,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 #from matplotlib.pyplot import summer
 from numpy import average
 import datetime
-from django.utils.translation import ugettext_lazy as _  # or gettext_lazy
+from django.utils.translation import gettext_lazy as _  # or gettext_lazy
 
 # Create your models here.
 
@@ -490,5 +490,31 @@ class KoboPoshan(models.Model):
         managed = TRUE
         db_table = 'kobo_poshan'
 
+
     def __str__(self):
         return self.organization
+
+from django.db import models
+
+class KoboPoshan2(models.Model):
+    owner = models.CharField(max_length=255, blank=True, null=True)
+    state = models.CharField(max_length=255, blank=True, null=True)
+    district = models.CharField(max_length=255, blank=True, null=True)
+    tehsil = models.CharField(max_length=255, blank=True, null=True)
+    village = models.CharField(max_length=255, blank=True, null=True)
+    pincode = models.CharField(max_length=255, blank=True, null=True)
+    picture = models.CharField(max_length=255, blank=True, null=True)
+    nutri_area = models.CharField(max_length=255, blank=True, null=True)
+    variety_num = models.CharField(max_length=255, blank=True, null=True)
+    variety_list = models.CharField(max_length=255, blank=True, null=True)
+    seed_type = models.CharField(max_length=255, blank=True, null=True)
+    seed_source = models.CharField(max_length=255, blank=True, null=True)
+    est_yield = models.CharField(max_length=255, blank=True, null=True)
+    support = models.CharField(max_length=255, blank=True, null=True)
+    afif_support = models.CharField(max_length=255, blank=True, null=True)
+    endtime1 = models.DateTimeField(primary_key=True)  # PK, not null
+    lat_lng = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        db_table = 'kobo_poshan_2'
+        managed = False  # Set to True only if Django should manage the table

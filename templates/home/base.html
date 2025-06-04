@@ -1,6 +1,6 @@
 {% load static %}
 {% load i18n %}
-{% load socialaccount %}
+
 
 {% get_current_language as LANGUAGE_CODE %}
 {% get_available_languages as LANGUAGES %}
@@ -11,8 +11,8 @@
 <!-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
   <title>Poshan Vatika</title>
   <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
-  {% load pwa %}
-  {% progressive_web_app_meta %}
+ 
+  
   <link rel="manifest" href="{% static 'manifest.json' %}">
   <link rel="stylesheet" href="{% static 'static1/mystyle.css' %}" />
   <!-- materialize icons, css & js -->
@@ -259,7 +259,8 @@ select#language option {
     <li ><a class="subheader" >{% trans "DATA CONTRIBUTION AND FORMS" %}</a></li>
     
     
-    <li><a href="https://ee.kobotoolbox.org/x/vHVD3HnV" style="font-size: 15px;">{% trans "PoshanVaitka Form" %}</a> </li>
+    <li><a href="https://ee.kobotoolbox.org/x/fcnSnW0u" style="font-size: 15px;">{% trans "PoshanVaitka Form" %}</a> </li>
+    <!-- <li><a href="https://ee.kobotoolbox.org/x/vHVD3HnV" style="font-size: 15px;">{% trans "PoshanVaitka Form" %}</a> </li> -->
     <li><a href="{% url 'captvatikapic'%}" class="waves-effect">{% trans "Capture PoshanVatikas" %}</a></li>
     <!-- <li><a href="http://ee.communitygis.net/x/RWF4D9SR" class="waves-effect">Vistrit Mahiti(Marathi Form)</a></li> -->
     <li><a href="{% url 'captwellpic'%}" class="waves-effect">{% trans "Capture Wells" %}</a></li>
@@ -360,8 +361,8 @@ select#language option {
     {% endif %} -->
     <li ><a class="subheader" >{% trans "DATA CONTRIBUTION AND FORMS" %}</a></li>
     
-    
-    <li><a href="https://ee.kobotoolbox.org/x/vHVD3HnV" style="font-size: 15px;">{% trans "PoshanVaitka Form" %}</a> </li>
+    <li><a href="https://ee.kobotoolbox.org/x/fcnSnW0u" style="font-size: 15px;">{% trans "PoshanVaitka Form" %}</a> </li>
+    <!-- <li><a href="https://ee.kobotoolbox.org/x/vHVD3HnV" style="font-size: 15px;">{% trans "PoshanVaitka Form" %}</a> </li> -->
     <li><a href="{% url 'captvatikapic'%}" class="waves-effect">{% trans "Capture PoshanVatikas" %}</a></li>
     <!-- <li><a href="http://ee.communitygis.net/x/RWF4D9SR" class="waves-effect">Vistrit Mahiti(Marathi Form)</a></li> -->
     <li><a href="{% url 'captwellpic'%}" class="waves-effect">{% trans "Capture Wells" %}</a></li>

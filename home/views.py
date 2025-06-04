@@ -25,7 +25,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login, logout
 from .forms import UploadPictureForm, UploadWellPictureForm,BasicPoshanForm,UploadSeedForm
-from .models import  UploadWellPictureModel, UploadPictureModel,PoshanFormInformation,BasicPoshanModel,CensusTable,AhmedSchoolForm,UploadSeedModel,KoboPoshan
+from .models import  UploadWellPictureModel, UploadPictureModel,PoshanFormInformation,BasicPoshanModel,CensusTable,AhmedSchoolForm,UploadSeedModel,KoboPoshan,KoboPoshan2
 # Create your views here.
 from django.template.defaultfilters import filesizeformat
 # from django.utils.translation import ugettext_lazy as _
@@ -264,13 +264,14 @@ def viewVatikas(request):
     vatikas1 = PoshanFormInformation.objects.all()
     onlinevatikascount = PoshanFormInformation.objects.count()
     vatikas3 = KoboPoshan.objects.all()
-    kobovatiakscount = KoboPoshan.objects.count()
+    vatikas3a = KoboPoshan2.objects.all()
+    kobovatiakscount = KoboPoshan.objects.count()+ KoboPoshan2.objects.count()
     vatikas2 = UploadPictureModel.objects.filter(type='AFIF')
     selfcons = PoshanFormInformation.objects.filter(level_nutri_garden='for_self_consumption',nutri_garden_scale ='Only for vegetables and fruits, Backyard Poultry')
     selfconscount =selfcons.count()
     sellsurp = PoshanFormInformation.objects.filter(level_nutri_garden='selling_surplus')
     sellsurpcount = sellsurp.count()
-    context = {'vatikas1': vatikas1,'vatikas2': vatikas2, 'vatikas':vatikas,'selfcons':selfcons,'sellsurp':sellsurp,'vatikas3':vatikas3,'vatikascount':vatikascount,'onlinevatikascount':onlinevatikascount,'kobovatiakscount':kobovatiakscount,'AFIF_yearly_counts':AFIF_yearly_counts,'selfconscount':selfconscount,'sellsurpcount':sellsurpcount,'view_name': view_name,'is_view_Vatikas': view_name == 'viewVatikas' }
+    context = {'vatikas1': vatikas1,'vatikas2': vatikas2, 'vatikas':vatikas,'selfcons':selfcons,'sellsurp':sellsurp,'vatikas3':vatikas3,'vatikas3a':vatikas3a,'vatikascount':vatikascount,'onlinevatikascount':onlinevatikascount,'kobovatiakscount':kobovatiakscount,'AFIF_yearly_counts':AFIF_yearly_counts,'selfconscount':selfconscount,'sellsurpcount':sellsurpcount,'view_name': view_name,'is_view_Vatikas': view_name == 'viewVatikas' }
     # context = {'wells': wells, 'mylist':mylist}
     return render(request, 'home/viewVatikas.html', context )
     # return render(request, 'map/map.html', context)
