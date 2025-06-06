@@ -5,164 +5,149 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         #map { height: 100vh; }
-        .checkboxes { 
-            margin: 10px; 
-            padding: 10px; 
-            background: pink; 
-            position: absolute; 
-            top: 50px; /* Adjust distance from top */
-            left: 10px; /* Adjust distance from left */
-            z-index: 1000; 
-            max-height: 80vh; /* Set a fixed max height */
-            overflow-y: auto; /* Ensure scrolling when content overflows */
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Optional for better visibility */
-            width: 220px; /* Adjusted width for checkboxes */
-            pink-space: nowrap; /* Prevent checkboxes from wrapping */
+
+        .checkboxes {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 9999;
+            background: #ffffff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            max-height: 90vh;
+            overflow-y: auto;
+            width: 320px;
+            font-size: 14px;
         }
 
         .checkboxes label {
-            display: block;
-            overflow: hidden;
-            text-overflow: ellipsis; /* Ensure long names are truncated */
-            max-width: 180px; /* Set max width for each checkbox label */
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            cursor: pointer;
         }
 
-        .leaflet-control-container {
-            margin-top: 80px; /* Push zoom controls down */
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border: 1px solid #333;
+            display: inline-block;
         }
 
-        /* Tooltip styling */
-        .leaflet-tooltip {
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 4px;
-            padding: 5px;
-            font-size: 12px;
-            max-width: 150px;
+        .leaflet-top.leaflet-right {
+            top: 10px !important;
+            right: 10px !important;
+            z-index: 1000;
+        }
+
+        #legend {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="checkboxes" id="checkboxes"></div>
     <div id="map"></div>
+    <div class="checkboxes" id="checkboxes">
+        <div style="font-weight: bold; margin-bottom: 6px;">Technology Layers</div>
+    </div>
+    <div class="legend" id="legend"></div>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // Initialize map
-        const map = L.map('map').setView([20.5937, 78.9629], 6); // Center on India
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors',
-        }).addTo(map);
-        var wms_layer0 = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/geonode/wms',{
-          layers: 'states_in_india',
-          format: 'image/png',
-          transparent: 'true',
-          
-        //   cql_filter: (`(district='Palghar')or (district='Nashik')`),
-        //   styles:'mumbai_roads_prabhagwise20oct23',
-          });
-        map.addLayer(wms_layer0);
-        // GeoJSON URL with Access Token
-        const geojsonUrl = 'https://geonode.communitygis.in/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typename=geonode%3Arutag_26nov24&outputFormat=json&srs=EPSG%3A4326&srsName=EPSG%3A4326&access_token=bCsy2FL2xa3253ec1wGn65xPZtiIvE';
+        const stylesColor = {
+            'Mobile Sabjee Cooler': 'red',
+            'Bamboo Polyhouse': 'blue',
+            'Solar Hydro Distilor': 'yellow',
+            'www.marketmirchi.com –A Digital marketing Platform': 'green',
+            'Multi-purpose Processor': 'orange',
+            'Natural fiber based surface water tanks': 'magenta',
+            'Integrated Curing and Storage for Onions': 'purple',
+            'Rocking Chair for Parkinson': 'turquoise',
+            'Smart Stethoscope': 'teal',
+            'Assistive Device for Ailing Cattle': 'pink',
+            'Solar Food Cart': 'lightgreen',
+            'Solar Charge Controller': 'navy'
+        };
 
-        // Layers management
-        const layers = {};
-        
-        // Define styles mimicking SLD
-        function getFeatureStyle(properties) {
-            // Example: Style based on a property like "category"
-            if (properties === 'Mobile Sabjee Cooler') {
-                return { color: 'red', weight: 2, fillOpacity: 0.5 };
-            } else if (properties === 'Bamboo Polyhouse') {
-                return { color: 'blue', weight: 2, fillOpacity: 0.5 };
-            } else if (properties === 'Solar Hydro Distilor') {
-                return { color: 'yellow', weight: 2, fillOpacity: 0.5 };
-            } else if (properties === 'www.marketmirchi.com –A Digital marketing Platform') {
-                return { color: 'green', weight: 2, fillOpacity: 0.5 };
-            } else if (properties === 'Multi-purpose Processor') {
-                return { color: 'orange', weight: 2, fillOpacity: 0.5 };
-            } else if (properties === 'Natural fiber based surface water tanks') {
-                return { color: 'magenta', weight: 2, fillOpacity: 0.5 };
-            } else if (properties === 'Integrated Curing and Storage for Onions') {
-                return { color: 'purple', weight: 2, fillOpacity: 0.5 };
-            } else if (properties === 'Rocking Chair for Parkinson') {
-                return { color: 'turquoise', weight: 4, fillOpacity: 0.7 };  
-            } else if (properties === 'Smart Stethoscope') {
-                return { color: 'teal', weight: 2, fillOpacity: 0.5 };
-            } else if (properties === 'Assistive Device for Ailing Cattle') {
-                return { color: 'pink', weight: 2, fillOpacity: 0.5 };
-            } else if (properties === 'Solar Food Cart') {
-                return { color: 'lightgreen', weight: 2, fillOpacity: 0.7 };
-            } else if (properties === 'Solar Charge Controller') {
-                    return { color: 'navy', weight: 2, fillOpacity: 0.5 };
-            } else {
-                return { color: 'black', weight: 1, fillOpacity: 0 };
-            }
+        function getFeatureStyle(name) {
+            return {
+                color: stylesColor[name] || 'black',
+                weight: 2,
+                fillOpacity: 0.5
+            };
         }
-        // Fetch GeoJSON
-        $.getJSON(geojsonUrl, function (data) {
-            const uniqueNames = new Set();
 
-            data.features.forEach(feature => {
-                uniqueNames.add(feature.properties.ruTAG_Name);
+        document.addEventListener("DOMContentLoaded", function () {
+            const map = L.map('map', { zoomControl: false }).setView([20.5937, 78.9629], 5.5);
+            L.control.zoom({ position: 'topright' }).addTo(map);
+
+            const baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            const wms_layer0 = L.tileLayer.wms('https://dilrmp-jk.communitygis.in/geoserver/geonode/wms', {
+                layers: 'geonode:states_in_india',
+                format: 'image/png',
+                transparent: true
+            });
+            map.addLayer(wms_layer0);
+
+            const geojsonUrl = 'https://dilrmp-jk.communitygis.in/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typename=geonode%3Arutag_14may25&outputFormat=application%2Fjson&srsName=EPSG%3A4326';
+
+            const layers = {};
+
+            // Initialize checkboxes and empty layers
+            Object.entries(stylesColor).forEach(([name, color]) => {
+                $('#checkboxes').append(`
+                    <label>
+                        <input type="checkbox" class="layer-toggle" value="${name}" checked>
+                        <div class="legend-color" style="background-color:${color};"></div>
+                        ${name}
+                    </label>
+                `);
+                layers[name] = L.layerGroup().addTo(map);
             });
 
-            // Generate checkboxes
-            uniqueNames.forEach(name => {
-                if (name) { // Only create checkbox if name is not empty or null
-                    $('#checkboxes').append(`
-                        <label>
-                            <input type="checkbox" class="layer-toggle" value="${name}" checked>
-                            ${name}
-                        </label><br>
-                    `);
+            $.getJSON(geojsonUrl, function (data) {
+                data.features.forEach(feature => {
+                    const name = feature.properties.rutag_name;
+                    if (!name || !(name in stylesColor)) return;
+
+                    const layer = L.geoJSON(feature, {
+                        style: getFeatureStyle(name)
+                    });
+
+                    layer.eachLayer(l => {
+                        l.bindTooltip(name);
+
+                        const popupContent = Object.entries(feature.properties)
+                            .filter(([key]) => !['fid', 'id', 'rutag_name', 'area', 'rutag_sate'].includes(key))
+                            .map(([key, value]) => {
+                                if (key === 'district') key = 'District';
+                                if (key === 'state_ut') key = 'State';
+                                if (key === 'rutag_fund') key = 'Funded By';
+                                if (key === 'rutag_no_o') key = 'Technology Count';
+                                return `<b>${key}:</b> ${value}`;
+                            }).join('<br>');
+
+                        l.bindPopup(`<b>Technology Name:</b> ${name}<br>${popupContent}`);
+                    });
+
+                    layers[name].addLayer(layer);
+                });
+            });
+
+            $(document).on('change', '.layer-toggle', function () {
+                const name = $(this).val();
+                if (this.checked) {
+                    layers[name].addTo(map);
+                } else {
+                    map.removeLayer(layers[name]);
                 }
             });
-
-            // Add GeoJSON layer
-            const geojsonLayer = L.geoJSON(data, {
-                style: function (feature) {
-                    // Apply the style function
-                    return getFeatureStyle(feature.properties.ruTAG_Name);
-                },
-                onEachFeature: function (feature, layer) {
-                    const rutagName = feature.properties.ruTAG_Name;
-
-                    // Store layers by rutag_name
-                    if (!layers[rutagName]) layers[rutagName] = L.layerGroup();
-                    layers[rutagName].addLayer(layer);
-
-                    // Hover tooltip
-                    layer.bindTooltip(feature.properties.rutag_name);
-
-                    // Click popup
-                    const otherFields = Object.entries(feature.properties)
-                    .filter(([key]) => !['fid', 'id', 'ruTAG_Name', 'area','ruTAG_Sate',].includes(key)) // Exclude these keys                        .map(([key, value]) => `<b>${key}:</b> ${value}`)
-                    .map(([key, value]) => {
-                    // Rename specific keys
-                    if (key === 'district') key = 'District';
-                    if (key === 'state') key = 'State';
-                    if (key === 'ruTAG_Fund') key = 'Funded By';
-                    if (key === 'rutag_no_o') key = 'Technology Count';
-
-                return `<b>${key}:</b> ${value}`;
-            })
-                    .join('<br>');
-                    layer.bindPopup(`<b>Technology Name:</b> ${rutagName}<br>${otherFields}`);
-                }
-            });
-
-            // Add all layers to map initially
-            Object.values(layers).forEach(layerGroup => map.addLayer(layerGroup));
-        });
-
-        // Handle checkbox toggling
-        $(document).on('change', '.layer-toggle', function () {
-            const name = $(this).val();
-            if (this.checked) {
-                layers[name].addTo(map);
-            } else {
-                map.removeLayer(layers[name]);
-            }
         });
     </script>
 </body>
