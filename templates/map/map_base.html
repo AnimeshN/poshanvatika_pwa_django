@@ -126,8 +126,9 @@
 
 		<script>
 			var mymap;
+            var source = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/geonode/wms', {
 
-			var source = L.tileLayer.wms('https://geoserver2.communitygis.net/geoserver/wms', {
+			// var source = L.tileLayer.wms('https://https://dilrmp-jk.communitygis.in//geoserver/wms', {
 				layer: 'geonode:states_of_india',
 				format: 'image/png',
 				transparent: 'true',
