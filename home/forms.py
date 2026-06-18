@@ -85,3 +85,71 @@ class CreateUserForm(UserCreationForm):
 
 class AutoCADFileUploadForm(forms.Form):
     file = forms.FileField(label='Select AutoCAD file')
+
+
+
+class PoshanVatikaForm(forms.Form):
+
+    owner = forms.CharField(label="Name", max_length=255)
+
+    state = forms.CharField(max_length=255)
+    district = forms.CharField(max_length=255)
+    tehsil = forms.CharField(max_length=255, required=False)
+    village = forms.CharField(max_length=255)
+
+    pincode = forms.CharField(max_length=20, required=False)
+
+    nutri_area = forms.CharField(
+        label="Nutri Vatika Area",
+        max_length=255,
+        required=False
+    )
+
+    variety_num = forms.CharField(
+        label="No. of Varieties",
+        max_length=255,
+        required=False
+    )
+
+    variety_list = forms.CharField(
+        label="Varieties Grown",
+        widget=forms.Textarea(attrs={"rows": 3}),
+        required=False
+    )
+
+    seed_type = forms.CharField(
+        max_length=255,
+        required=False
+    )
+
+    seed_source = forms.CharField(
+        max_length=255,
+        required=False
+    )
+
+    est_yield = forms.CharField(
+        label="Estimated Yield",
+        max_length=255,
+        required=False
+    )
+
+    support = forms.CharField(
+        max_length=255,
+        required=False
+    )
+
+    afif_support = forms.CharField(
+        max_length=255,
+        required=False
+    )
+
+    picture = forms.ImageField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field in self.fields.values():
+            field.widget.attrs.update({
+                'class': 'browser-default',
+                'style': 'width:100%;padding:10px;margin-bottom:15px;'
+            })
