@@ -1055,4 +1055,166 @@ def edit_well_picture(request, pk):
     }
 
     return render(request, 'home/edit_well_picture.html', context)
+def airport_map(request):
+    # Load ONLY Indian airports automatically
+    airports = Airport.objects.filter(iso_country="IN")
 
+    context = {
+        "airports": airports
+    }
+
+    return render(request, "home/airports.html", context)
+
+def airport_map_page(request):
+    # Only Indian regions
+    states = (
+        Airport.objects
+        .filter(iso_country="IN", iso_region__isnull=False)
+        .values_list("iso_region", flat=True)
+        .distinct()
+        .order_by("iso_region")
+    )
+
+    return render(request, "home/airports.html", {"states": states})
+
+
+def airport_map_data(request):
+    state = request.GET.get("state")
+    scope = request.GET.get("scope")
+
+    # DEFAULT → India airports
+    airports = Airport.objects.filter(iso_country="IN")
+
+    # If user selects All Airports
+    if scope == "all":
+        airports = Airport.objects.all()
+
+    # Filter by state if selected
+    if state and state != "all":
+        airports = airports.filter(iso_region=state)
+
+    data = list(
+        airports.values(
+            "name",
+            "iata_code",
+            "icao_code",
+            "latitude_deg",
+            "longitude_deg",
+            "municipality",
+            "iso_region"
+        )
+    )
+
+    return JsonResponse(data, safe=False)
+
+
+def capture_poshanvatika(request):
+
+    if request.method == "POST":
+
+        form = PoshanVatikaForm(
+            request.POST,
+            request.FILES
+        )
+
+        if form.is_valid():
+
+            try:
+
+                photo_name = ""
+
+                if request.FILES.get("picture"):
+
+                    image = request.FILES["picture"]
+
+                    folder = os.path.join(
+                        settings.MEDIA_ROOT,
+                        "PoshanVatikaPics"
+                    )
+
+                    os.makedirs(folder, exist_ok=True)
+
+                    filename = (
+                        datetime.now().strftime(
+                            "%Y%m%d%H%M%S"
+                        )
+                        + "_"
+                        + image.name
+                    )
+
+                    filepath = os.path.join(
+                        folder,
+                        filename
+                    )
+
+                    with open(filepath, "wb+") as f:
+                        for chunk in image.chunks():
+                            f.write(chunk)
+
+                    photo_name = (
+                        "PoshanVatikaPics/"
+                        + filename
+                    )
+
+                lat = request.POST.get("lat")
+                lng = request.POST.get("lng")
+
+                KoboPoshan2.objects.create(
+
+                    owner=form.cleaned_data["owner"],
+
+                    village=form.cleaned_data["village"],
+                    tehsil=form.cleaned_data["tehsil"],
+                    district=form.cleaned_data["district"],
+                    state=form.cleaned_data["state"],
+
+                    pincode=form.cleaned_data["pincode"],
+
+                    nutri_area=form.cleaned_data["nutri_area"],
+
+                    variety_num=form.cleaned_data["variety_num"],
+
+                    variety_list=form.cleaned_data["variety_list"],
+
+                    seed_type=form.cleaned_data["seed_type"],
+
+                    seed_source=form.cleaned_data["seed_source"],
+
+                    est_yield=form.cleaned_data["est_yield"],
+
+                    support=form.cleaned_data["support"],
+
+                    afif_support=form.cleaned_data["afif_support"],
+
+                    picture=photo_name,
+
+                    lat_lng=f"{lat},{lng}",
+
+                    endtime1=timezone.now()
+                )
+
+                messages.success(
+                    request,
+                    "Poshan Vatika saved successfully."
+                )
+
+                return redirect(
+                    "capture_poshanvatika"
+                )
+
+            except Exception as e:
+
+                messages.error(
+                    request,
+                    str(e)
+                )
+
+    else:
+
+        form = PoshanVatikaForm()
+
+    return render(
+        request,
+        "home/capture_poshanvatika.html",
+        {"form": form}
+    )
