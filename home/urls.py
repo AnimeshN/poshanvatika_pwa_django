@@ -46,8 +46,8 @@ urlpatterns = [
     # path('delete/<int:id>', views.delete, name='delete')
     path('edit_well_picture/<int:pk>/', views.edit_well_picture, name='edit_well_picture'),
     path('i18n/', include('django.conf.urls.i18n')),
-
-
+   
+    path("capture-poshanvatika/",views.capture_poshanvatika,name="capture_poshanvatika"),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
