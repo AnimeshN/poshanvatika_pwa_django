@@ -518,3 +518,58 @@ class KoboPoshan2(models.Model):
     class Meta:
         db_table = 'kobo_poshan_2'
         managed = False  # Set to True only if Django should manage the table
+
+class PincodeCentroid(models.Model):
+    id = models.IntegerField(
+        primary_key=True,
+        db_column="id"
+    )
+
+    pincode = models.CharField(
+        max_length=20,
+        db_column="pincode",
+        db_index=True
+    )
+
+    office_name = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        db_column="office_nam"
+    )
+
+    division = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        db_column="division"
+    )
+
+    region = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        db_column="region"
+    )
+
+    circle = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        db_column="circle"
+    )
+
+    latitude = models.FloatField(
+        db_column="latitude"
+    )
+
+    longitude = models.FloatField(
+        db_column="longitude"
+    )
+
+    class Meta:
+        db_table = "pincodes_centroid_28may25"
+        managed = False
+
+    def __str__(self):
+        return f"{self.pincode} - {self.latitude}, {self.longitude}"

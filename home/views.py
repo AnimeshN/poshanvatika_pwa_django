@@ -27,7 +27,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login, logout
 from .forms import UploadPictureForm, UploadWellPictureForm,BasicPoshanForm,UploadSeedForm
-from .models import  UploadWellPictureModel, UploadPictureModel,PoshanFormInformation,BasicPoshanModel,CensusTable,AhmedSchoolForm,UploadSeedModel,KoboPoshan,KoboPoshan2
+from .models import  UploadWellPictureModel, UploadPictureModel,PoshanFormInformation,BasicPoshanModel,CensusTable,AhmedSchoolForm,UploadSeedModel,KoboPoshan,KoboPoshan2,PincodeCentroid
 # Create your views here.
 from django.template.defaultfilters import filesizeformat
 # from django.utils.translation import ugettext_lazy as _
@@ -475,6 +475,14 @@ def captvatikapic(request):
             myfile = "VatikaPics/profile-"+time.strftime("%Y%m%d-%H%M%S")+".png"
             fs = FileSystemStorage()
             filename = fs.save(myfile, data)
+            print("========== ABOUT TO INSERT ==========")
+            print("name:", name)
+            print("village:", village)
+            print("district:", district)
+            print("lat:", lat)
+            print("lng:", lng)
+            print("filename:", filename)
+            print("=====================================")
             # picLocation = UploadPictureModel.objects.create(picture=filename, name=name, nutri_nm=nutri_nm, area=area, village=village, district=district, state=state,pincode=pincode, lat=lat, lng=lng)
             picLocation = UploadPictureModel.objects.create(picture=filename,organization=organization,district=district,pincode=pincode,lat=lat,lng=lng,self_made=self_made,
                                local_ngo=local_ngo,external_support=external_support,
@@ -489,13 +497,21 @@ def captvatikapic(request):
                                source_water=source_water,school_name=school_name,any_weekly_class=any_weekly_class,
                                weekly=weekly,any_innovative=any_innovative,mid_day_meal=mid_day_meal,surplus_selling=surplus_selling,
                                hot_cooked_meal=hot_cooked_meal,school_child=school_child,school_scale=school_scale,village=village,state=state,name=name,type=type)
+            print("========== DATABASE INSERT SUCCESS ==========")
+            print("INSERTED ID:", picLocation.id)
+            print("==============================================")
             picLocation.save()
             datauri = False
             del datauri
-        except NameError:
-            print("Image is not captured")
-    else:
-        form = UploadPictureForm()
+        except Exception as e:
+            import traceback
+            print("========== POSHAN VATIKA SAVE ERROR ==========")
+            print("ERROR:", repr(e))
+            traceback.print_exc()
+            print("==============================================")
+            raise
+        else:
+            form = UploadPictureForm()
     return render(request,'home/captureVatikaPic.html',{})
 
     
@@ -1110,109 +1126,785 @@ def airport_map_data(request):
     return JsonResponse(data, safe=False)
 
 
+# def capture_poshanvatika(request):
+
+#     if request.method == "POST":
+
+#         form = PoshanVatikaForm(
+#             request.POST,
+#             request.FILES
+#         )
+
+#         if form.is_valid():
+
+#             try:
+
+#                 photo_name = ""
+
+#                 if request.FILES.get("picture"):
+
+#                     image = request.FILES["picture"]
+
+#                     folder = os.path.join(
+#                         settings.MEDIA_ROOT,
+#                         "PoshanVatikaPics"
+#                     )
+
+#                     os.makedirs(folder, exist_ok=True)
+
+#                     filename = (
+#                         datetime.now().strftime(
+#                             "%Y%m%d%H%M%S"
+#                         )
+#                         + "_"
+#                         + image.name
+#                     )
+
+#                     filepath = os.path.join(
+#                         folder,
+#                         filename
+#                     )
+
+#                     with open(filepath, "wb+") as f:
+#                         for chunk in image.chunks():
+#                             f.write(chunk)
+
+#                     photo_name = (
+#                         "PoshanVatikaPics/"
+#                         + filename
+#                     )
+
+#                 lat = request.POST.get("lat")
+#                 lng = request.POST.get("lng")
+
+#                 KoboPoshan2.objects.create(
+
+#                     owner=form.cleaned_data["owner"],
+
+#                     village=form.cleaned_data["village"],
+#                     tehsil=form.cleaned_data["tehsil"],
+#                     district=form.cleaned_data["district"],
+#                     state=form.cleaned_data["state"],
+
+#                     pincode=form.cleaned_data["pincode"],
+
+#                     nutri_area=form.cleaned_data["nutri_area"],
+
+#                     variety_num=form.cleaned_data["variety_num"],
+
+#                     variety_list=form.cleaned_data["variety_list"],
+
+#                     seed_type=form.cleaned_data["seed_type"],
+
+#                     seed_source=form.cleaned_data["seed_source"],
+
+#                     est_yield=form.cleaned_data["est_yield"],
+
+#                     support=form.cleaned_data["support"],
+
+#                     afif_support=form.cleaned_data["afif_support"],
+
+#                     picture=photo_name,
+
+#                     lat_lng=f"{lat},{lng}",
+
+#                     endtime1=timezone.now()
+#                 )
+
+#                 messages.success(
+#                     request,
+#                     "Poshan Vatika saved successfully."
+#                 )
+
+#                 return redirect(
+#                     "capture_poshanvatika"
+#                 )
+
+#             except Exception as e:
+
+#                 messages.error(
+#                     request,
+#                     str(e)
+#                 )
+
+#     else:
+
+#         form = PoshanVatikaForm()
+
+#     return render(
+#         request,
+#         "home/capture_poshanvatika.html",
+#         {"form": form}
+#     )
+
+# def capture_poshanvatika(request):
+
+#     if request.method == "POST":
+
+#         form = PoshanVatikaForm(
+#             request.POST,
+#             request.FILES
+#         )
+
+#         if form.is_valid():
+
+#             try:
+
+#                 # =================================================
+#                 # 1. GET PINCODE
+#                 # =================================================
+
+#                 pincode = str(
+#                     form.cleaned_data["pincode"]
+#                 ).strip()
+
+#                 if not pincode:
+
+#                     messages.error(
+#                         request,
+#                         "Please enter a valid pincode."
+#                     )
+
+#                     return render(
+#                         request,
+#                         "home/capture_poshanvatika.html",
+#                         {"form": form}
+#                     )
+
+
+#                 # =================================================
+#                 # 2. GET GPS COORDINATES FROM FORM
+#                 # =================================================
+
+#                 gps_lat = request.POST.get(
+#                     "lat",
+#                     ""
+#                 ).strip()
+
+#                 gps_lng = request.POST.get(
+#                     "lng",
+#                     ""
+#                 ).strip()
+
+
+#                 # =================================================
+#                 # 3. DECIDE LOCATION SOURCE
+#                 # =================================================
+
+#                 if gps_lat and gps_lng:
+
+#                     # -------------------------------------------------
+#                     # GPS WAS SELECTED AND SUCCESSFULLY CAPTURED
+#                     # GPS TAKES PRIORITY OVER PINCODE
+#                     # -------------------------------------------------
+
+#                     latitude = gps_lat
+#                     longitude = gps_lng
+
+#                     lat_lng = (
+#                         f"{latitude},{longitude}"
+#                     )
+
+#                     print(
+#                         "LOCATION SOURCE: GPS"
+#                     )
+
+#                     print(
+#                         "GPS LATITUDE:",
+#                         latitude
+#                     )
+
+#                     print(
+#                         "GPS LONGITUDE:",
+#                         longitude
+#                     )
+
+#                     print(
+#                         "LAT_LNG:",
+#                         lat_lng
+#                     )
+
+
+#                 else:
+
+#                     # =================================================
+#                     # 4. GPS NOT AVAILABLE
+#                     #    FALL BACK TO PINCODE CENTROID
+#                     # =================================================
+
+#                     geonode_url = (
+#                         "https://geonode.communitygis.in/"
+#                         "geoserver/geonode/ows"
+                        
+#                     )
+
+#                     params = {
+
+#                         "service": "WFS",
+
+#                         "version": "1.0.0",
+
+#                         "request": "GetFeature",
+
+#                         "typeName":
+#                             "geonode:pincodes_centroid_28may25",
+
+#                         "outputFormat":
+#                             "application/json",
+
+#                         "CQL_FILTER":
+#                             f"pincode='{pincode}'",
+#                     }
+
+
+#                     response = requests.get(
+#                         geonode_url,
+#                         params=params,
+#                         timeout=30
+#                     )
+#                     print("========== GEONODE DEBUG ==========")
+#                     print("GeoNode URL:", response.url)
+#                     print("HTTP STATUS:", response.status_code)
+#                     print("RESPONSE:", response.text[:2000])
+#                     print("===================================")
+
+#                     response.raise_for_status()
+
+#                     data = response.json()
+
+#                     features = data.get("features", [])
+
+#                     if not features:
+#                         messages.error(
+#                             request,
+#                             f"No GeoNode centroid found for pincode {pincode}."
+#                         )
+#                         return render(
+#                             request,
+#                             "home/capture_poshanvatika.html",
+#                             {"form": form}
+#                         )
+
+
+#                     # -------------------------------------------------
+#                     # Debug information
+#                     # -------------------------------------------------
+
+#                     print(
+#                         "LOCATION SOURCE: PINCODE CENTROID"
+#                     )
+
+#                     print(
+#                         "GEONODE STATUS:",
+#                         response.status_code
+#                     )
+
+#                     print(
+#                         "GEONODE URL:",
+#                         response.url
+#                     )
+
+#                     print(
+#                         "GEONODE RESPONSE:",
+#                         response.text[:1000]
+#                     )
+
+
+#                     # -------------------------------------------------
+#                     # Check response
+#                     # -------------------------------------------------
+
+#                     if response.status_code != 200:
+
+#                         messages.error(
+#                             request,
+#                             "Unable to retrieve location "
+#                             "from GeoNode."
+#                         )
+
+#                         return render(
+#                             request,
+#                             "home/capture_poshanvatika.html",
+#                             {"form": form}
+#                         )
+
+
+#                     # =================================================
+#                     # 5. READ GEOJSON
+#                     # =================================================
+
+#                     try:
+
+#                         data = response.json()
+
+#                     except ValueError:
+
+#                         messages.error(
+#                             request,
+#                             "GeoNode returned an invalid "
+#                             "location response."
+#                         )
+
+#                         return render(
+#                             request,
+#                             "home/capture_poshanvatika.html",
+#                             {"form": form}
+#                         )
+
+
+#                     features = data.get(
+#                         "features",
+#                         []
+#                     )
+
+
+#                     # =================================================
+#                     # 6. CHECK PINCODE EXISTS
+#                     # =================================================
+
+#                     if not features:
+
+#                         messages.error(
+#                             request,
+#                             f"No location found for pincode "
+#                             f"{pincode}. Please check the pincode."
+#                         )
+
+#                         return render(
+#                             request,
+#                             "home/capture_poshanvatika.html",
+#                             {"form": form}
+#                         )
+
+
+#                     # =================================================
+#                     # 7. GET LATITUDE / LONGITUDE FROM ATTRIBUTES
+#                     # =================================================
+
+#                     properties = features[0].get(
+#                         "properties",
+#                         {}
+#                     )
+
+
+#                     latitude = properties.get(
+#                         "latitude"
+#                     )
+
+#                     longitude = properties.get(
+#                         "longitude"
+#                     )
+
+
+#                     # =================================================
+#                     # 8. FALLBACK TO GEOMETRY
+#                     # =================================================
+
+#                     if latitude is None or longitude is None:
+
+#                         geometry = features[0].get(
+#                             "geometry",
+#                             {}
+#                         )
+
+#                         coordinates = geometry.get(
+#                             "coordinates",
+#                             []
+#                         )
+
+#                         if len(coordinates) >= 2:
+
+#                             longitude = coordinates[0]
+
+#                             latitude = coordinates[1]
+
+
+#                     # =================================================
+#                     # 9. MAKE SURE LOCATION EXISTS
+#                     # =================================================
+
+#                     if latitude is None or longitude is None:
+
+#                         messages.error(
+#                             request,
+#                             f"Latitude and longitude are not "
+#                             f"available for pincode {pincode}."
+#                         )
+
+#                         return render(
+#                             request,
+#                             "home/capture_poshanvatika.html",
+#                             {"form": form}
+#                         )
+
+
+#                     # =================================================
+#                     # 10. CREATE lat_lng VALUE
+#                     # =================================================
+
+#                     lat_lng = (
+#                         f"{latitude},{longitude}"
+#                     )
+
+
+#                     print(
+#                         "PINCODE:",
+#                         pincode
+#                     )
+
+#                     print(
+#                         "CENTROID LATITUDE:",
+#                         latitude
+#                     )
+
+#                     print(
+#                         "CENTROID LONGITUDE:",
+#                         longitude
+#                     )
+
+#                     print(
+#                         "LAT_LNG:",
+#                         lat_lng
+#                     )
+
+
+#                 # =================================================
+#                 # 11. SAVE PHOTO
+#                 # =================================================
+
+#                 photo_name = ""
+
+
+#                 if request.FILES.get("picture"):
+
+#                     image = request.FILES["picture"]
+
+
+#                     folder = os.path.join(
+#                         settings.MEDIA_ROOT,
+#                         "PoshanVatikaPics"
+#                     )
+
+
+#                     os.makedirs(
+#                         folder,
+#                         exist_ok=True
+#                     )
+
+
+#                     filename = (
+#                         datetime.now().strftime(
+#                             "%Y%m%d%H%M%S"
+#                         )
+#                         + "_"
+#                         + image.name
+#                     )
+
+
+#                     filepath = os.path.join(
+#                         folder,
+#                         filename
+#                     )
+
+
+#                     with open(
+#                         filepath,
+#                         "wb+"
+#                     ) as f:
+
+#                         for chunk in image.chunks():
+
+#                             f.write(chunk)
+
+
+#                     photo_name = (
+#                         "PoshanVatikaPics/"
+#                         + filename
+#                     )
+
+
+#                 # =================================================
+#                 # 12. SAVE KOBO POSHAN 2
+#                 # =================================================
+
+#                 KoboPoshan2.objects.create(
+
+#                     owner=form.cleaned_data["owner"],
+
+#                     village=form.cleaned_data["village"],
+
+#                     tehsil=form.cleaned_data["tehsil"],
+
+#                     district=form.cleaned_data["district"],
+
+#                     state=form.cleaned_data["state"],
+
+#                     pincode=pincode,
+
+#                     nutri_area=form.cleaned_data["nutri_area"],
+
+#                     variety_num=form.cleaned_data["variety_num"],
+
+#                     variety_list=form.cleaned_data["variety_list"],
+
+#                     seed_type=form.cleaned_data["seed_type"],
+
+#                     seed_source=form.cleaned_data["seed_source"],
+
+#                     est_yield=form.cleaned_data["est_yield"],
+
+#                     support=form.cleaned_data["support"],
+
+#                     afif_support=form.cleaned_data["afif_support"],
+
+#                     picture=photo_name,
+
+#                     lat_lng=lat_lng,
+
+#                     endtime1=timezone.now()
+#                 )
+
+
+#                 # =================================================
+#                 # 13. SUCCESS
+#                 # =================================================
+
+#                 messages.success(
+#                     request,
+#                     "Poshan Vatika saved successfully."
+#                 )
+
+
+#                 return redirect(
+#                     "capture_poshanvatika"
+#                 )
+
+
+#             except requests.RequestException as e:
+
+#                 print(
+#                     "GEONODE REQUEST ERROR:",
+#                     str(e)
+#                 )
+
+#                 messages.error(
+#                     request,
+#                     "Unable to connect to GeoNode. "
+#                     "Please try again."
+#                 )
+
+
+#             except Exception as e:
+
+#                 print(
+#                     "POSHAN VATIKA ERROR:",
+#                     str(e)
+#                 )
+
+#                 messages.error(
+#                     request,
+#                     str(e)
+#                 )
+
+
+#     else:
+
+#         form = PoshanVatikaForm()
+
+
+#     return render(
+#         request,
+#         "home/capture_poshanvatika.html",
+#         {"form": form}
+#     )
+
 def capture_poshanvatika(request):
 
     if request.method == "POST":
 
-        form = PoshanVatikaForm(
-            request.POST,
-            request.FILES
-        )
+        form = PoshanVatikaForm(request.POST, request.FILES)
 
         if form.is_valid():
 
-            try:
+            # ---------------------------------------------------------
+            # 1. Get GPS coordinates submitted by the browser
+            # ---------------------------------------------------------
+            gps_lat = request.POST.get("lat", "").strip()
+            gps_lng = request.POST.get("lng", "").strip()
 
-                photo_name = ""
+            # Pincode from validated form
+            pincode = form.cleaned_data.get("pincode", "").strip()
 
-                if request.FILES.get("picture"):
+            lat_lng = None
 
-                    image = request.FILES["picture"]
+            # ---------------------------------------------------------
+            # 2. GPS has priority
+            # ---------------------------------------------------------
+            if gps_lat and gps_lng:
 
-                    folder = os.path.join(
-                        settings.MEDIA_ROOT,
-                        "PoshanVatikaPics"
+                try:
+                    latitude = float(gps_lat)
+                    longitude = float(gps_lng)
+
+                    # Validate coordinate ranges
+                    if not (-90 <= latitude <= 90):
+                        raise ValueError("Invalid latitude")
+
+                    if not (-180 <= longitude <= 180):
+                        raise ValueError("Invalid longitude")
+
+                    lat_lng = f"{latitude:.6f},{longitude:.6f}"
+
+                except (ValueError, TypeError):
+
+                    messages.error(
+                        request,
+                        "Invalid GPS coordinates. Please capture your location again."
                     )
 
-                    os.makedirs(folder, exist_ok=True)
-
-                    filename = (
-                        datetime.now().strftime(
-                            "%Y%m%d%H%M%S"
-                        )
-                        + "_"
-                        + image.name
+                    return render(
+                        request,
+                        "home/capture_poshanvatika.html",
+                        {"form": form}
                     )
 
-                    filepath = os.path.join(
-                        folder,
-                        filename
+            # ---------------------------------------------------------
+            # 3. GPS not selected/available → use pincode centroid
+            # ---------------------------------------------------------
+            else:
+
+                if not pincode:
+
+                    messages.error(
+                        request,
+                        "Pincode is required when GPS location is not selected."
                     )
 
-                    with open(filepath, "wb+") as f:
-                        for chunk in image.chunks():
-                            f.write(chunk)
-
-                    photo_name = (
-                        "PoshanVatikaPics/"
-                        + filename
+                    return render(
+                        request,
+                        "capture_poshanvatika.html",
+                        {"form": form}
                     )
 
-                lat = request.POST.get("lat")
-                lng = request.POST.get("lng")
+                centroid = PincodeCentroid.objects.filter(
+                    pincode=pincode
+                ).first()
 
-                KoboPoshan2.objects.create(
+                if not centroid:
 
-                    owner=form.cleaned_data["owner"],
+                    messages.error(
+                        request,
+                        f"No location found for pincode {pincode}. "
+                        "Please verify the pincode or capture GPS location."
+                    )
 
-                    village=form.cleaned_data["village"],
-                    tehsil=form.cleaned_data["tehsil"],
-                    district=form.cleaned_data["district"],
-                    state=form.cleaned_data["state"],
+                    return render(
+                        request,
+                        "home/capture_poshanvatika.html",
+                        {"form": form}
+                    )
 
-                    pincode=form.cleaned_data["pincode"],
+                # Make sure coordinates actually exist
+                if centroid.latitude is None or centroid.longitude is None:
 
-                    nutri_area=form.cleaned_data["nutri_area"],
+                    messages.error(
+                        request,
+                        f"Location coordinates are not available for pincode {pincode}. "
+                        "Please capture GPS location."
+                    )
 
-                    variety_num=form.cleaned_data["variety_num"],
+                    return render(
+                        request,
+                        "home/capture_poshanvatika.html",
+                        {"form": form}
+                    )
 
-                    variety_list=form.cleaned_data["variety_list"],
-
-                    seed_type=form.cleaned_data["seed_type"],
-
-                    seed_source=form.cleaned_data["seed_source"],
-
-                    est_yield=form.cleaned_data["est_yield"],
-
-                    support=form.cleaned_data["support"],
-
-                    afif_support=form.cleaned_data["afif_support"],
-
-                    picture=photo_name,
-
-                    lat_lng=f"{lat},{lng}",
-
-                    endtime1=timezone.now()
+                lat_lng = (
+                    f"{float(centroid.latitude):.6f},"
+                    f"{float(centroid.longitude):.6f}"
                 )
 
-                messages.success(
-                    request,
-                    "Poshan Vatika saved successfully."
+            # ---------------------------------------------------------
+            # 4. Get all form values
+            # ---------------------------------------------------------
+            owner = form.cleaned_data.get("owner")
+            state = form.cleaned_data.get("state")
+            district = form.cleaned_data.get("district")
+            tehsil = form.cleaned_data.get("tehsil")
+            village = form.cleaned_data.get("village")
+            nutri_area = form.cleaned_data.get("nutri_area")
+            variety_num = form.cleaned_data.get("variety_num")
+            variety_list = form.cleaned_data.get("variety_list")
+            seed_type = form.cleaned_data.get("seed_type")
+            seed_source = form.cleaned_data.get("seed_source")
+            est_yield = form.cleaned_data.get("est_yield")
+            support = form.cleaned_data.get("support")
+            afif_support = form.cleaned_data.get("afif_support")
+
+            # ---------------------------------------------------------
+            # 5. Handle uploaded picture
+            # ---------------------------------------------------------
+            picture = form.cleaned_data.get("picture")
+
+            picture_path = ""
+
+            if picture:
+
+                upload_dir = os.path.join(
+                    settings.MEDIA_ROOT,
+                    "poshanvatika"
                 )
 
-                return redirect(
-                    "capture_poshanvatika"
+                os.makedirs(upload_dir, exist_ok=True)
+
+                filename = picture.name
+
+                file_path = os.path.join(
+                    upload_dir,
+                    filename
                 )
 
-            except Exception as e:
+                with open(file_path, "wb+") as destination:
 
-                messages.error(
-                    request,
-                    str(e)
+                    for chunk in picture.chunks():
+                        destination.write(chunk)
+
+                picture_path = os.path.join(
+                    "poshanvatika",
+                    filename
                 )
+
+            # ---------------------------------------------------------
+            # 6. Save to KoboPoshan2
+            # ---------------------------------------------------------
+            KoboPoshan2.objects.create(
+                owner=owner,
+                state=state,
+                district=district,
+                tehsil=tehsil,
+                village=village,
+                pincode=pincode,
+                picture=picture_path,
+                nutri_area=nutri_area,
+                variety_num=variety_num,
+                variety_list=variety_list,
+                seed_type=seed_type,
+                seed_source=seed_source,
+                est_yield=est_yield,
+                support=support,
+                afif_support=afif_support,
+                lat_lng=lat_lng,
+                endtime1=timezone.now()
+            )
+
+            messages.success(
+                request,
+                "Poshan Vatika details submitted successfully."
+            )
+
+            return redirect("capture_poshanvatika")
 
     else:
-
         form = PoshanVatikaForm()
 
     return render(

@@ -1102,140 +1102,195 @@ var table =
 
 
  <!-- Added for kobo_poshan2 - Kobo Form new -->
-{% for i in vatikas3a %}
-<script>
-  var table4a = 
-    
-    `<table class="table table-bordered table-striped mb-0" id="popup" style="font-size:12px; align:center;" >
-      <tbody>
-      
-        {% if i.picture %}
-           <tr>
-             <tr><img src="../media/kobo_poshan_pics/{{i.picture}}" alt="Image not Uploaded" style="height:100px; width:170px; border:2px solid #555;"/>
-           </tr>
-           {% endif %}  
+ {% for i in vatikas3a %}
 
-      {% if i.owner %}
-      <tr>
-          <th>Beneficiary name</th>
-          <th>{{ i.owner }}</th>
-      </tr>
-      
-      {% endif %}
-       {% if i.state %}
-      <tr>
-          <th>State</th>
-          <th>{{ i.state }}</th>
-      </tr>
-      
-      {% endif %}
-       {% if i.district %}
-      <tr>
-          <th>District</th>
-          <th>{{ i.district }}</th>
-      </tr>
-      
-      {% endif %}
-      {% if i.tehsil %}
-      <tr>
-          <th>Tehsil</th>
-          <th>{{ i.tehsil }}</th>
-      </tr>
-      
-      {% endif %}
-      {% if i.nutri_area %}
-      <tr>
-          <th>Area of nutrigarden</th>
-          <th>{{ i.nutri_area }}</th>
-      </tr>
-      
-      {% endif %}
-      {% if i.variety_num %}
-      <tr>
-          <th>Number of Varieties grown</th>
-          <th>{{ i.variety_num }}</th>
-      </tr>
-      
-      {% endif %}
-      {% if i.variety_list %}
-      <tr>
-          <th>List of varieties</th>
-          <th>{{ i.variety_list }}</th>
-      </tr>
-      
-      {% endif %}
-      {% if i.seed_type %}
-      <tr>
-          <th>Type of seed</th>
-          <th>{{ i.seed_type }}</th>
-      </tr>
-      
-      {% endif %}
-      {% if i.seed_source %}
-      <tr>
-          <th>Source of seed</th>
-          <th>{{ i.seed_source }}</th>
-      </tr>
-      
-      {% endif %}
-      {% if i.est_yield %}
-      <tr>
-          <th>Estimated Yield</th>
-          <th>{{ i.est_yield }}</th>
-      </tr>
-      
-      {% endif %}
-      {% if i.support %}
-      <tr>
-          <th>External support</th>
-          <th>{{ i.support }}</th>
-      </tr>
-      
-      {% endif %}
-      {% if i.afif_support %}
-      <tr>
-          <th>Support from AFIF </th>
-          <th>{{ i.afif_support }}</th>
-      </tr>
-      
-      {% endif %}
-      
-
-     
-    </tbody>
-  </table>
-  </br>`
-  var iconvar = icon_kobo2;
-  // pattern = i.lat_lng;
-  c = "{{i.lat_lng}}".split(sep=' ');
-  lat = c[0];
-  lng = c[1];
-  // console.log("cordinates : ",c[0],"+",c[1]);
-
-  var popupOptions =
-  {
-    'maxWidth': '500',
-    'className' : 'another-popup' // classname for another popup
-  }
-  var marker = L.marker([lat,lng], {icon:iconvar}).addTo(mymap).bindPopup(table4a, popupOptions);
-  // var marker = L.marker(["{{ i.lat }}", "{{ i.lng }}"], {icon:iconvar}).addTo(mymap);
-  poshanlayerGroup2.addLayer(marker);
-  marker.on('click', function (e) {
-        this.openPopup(e.latlng);
-  });
-
-  mymap.on ({
-      click: function() {
-          isClicked = false
-      },
-      popupclose: function () {
-          isClicked = false
-      }
-  })
-
-//hover end
-  </script>
-{% endfor %}
+ <script>
+ 
+   var table4a =
+     `<table class="table table-bordered table-striped mb-0"
+             id="popup"
+             style="font-size:12px;">
+ 
+       <tbody>
+ 
+         {% if i.picture %}
+         <tr>
+           <td>
+             <img
+               src="../media/poshanvatika/{{ i.picture }}"
+               alt="Image not Uploaded"
+               style="height:100px; width:170px; border:2px solid #555;"
+             />
+           </td>
+         </tr>
+         {% endif %}
+ 
+         {% if i.owner %}
+         <tr>
+           <th>Beneficiary name</th>
+           <th>{{ i.owner }}</th>
+         </tr>
+         {% endif %}
+ 
+         {% if i.state %}
+         <tr>
+           <th>State</th>
+           <th>{{ i.state }}</th>
+         </tr>
+         {% endif %}
+ 
+         {% if i.district %}
+         <tr>
+           <th>District</th>
+           <th>{{ i.district }}</th>
+         </tr>
+         {% endif %}
+ 
+         {% if i.tehsil %}
+         <tr>
+           <th>Tehsil</th>
+           <th>{{ i.tehsil }}</th>
+         </tr>
+         {% endif %}
+ 
+         {% if i.village %}
+         <tr>
+           <th>Village</th>
+           <th>{{ i.village }}</th>
+         </tr>
+         {% endif %}
+ 
+         {% if i.pincode %}
+         <tr>
+           <th>Pincode</th>
+           <th>{{ i.pincode }}</th>
+         </tr>
+         {% endif %}
+ 
+         {% if i.nutri_area %}
+         <tr>
+           <th>Area of nutrigarden</th>
+           <th>{{ i.nutri_area }}</th>
+         </tr>
+         {% endif %}
+ 
+         {% if i.variety_num %}
+         <tr>
+           <th>Number of Varieties grown</th>
+           <th>{{ i.variety_num }}</th>
+         </tr>
+         {% endif %}
+ 
+         {% if i.variety_list %}
+         <tr>
+           <th>List of varieties</th>
+           <th>{{ i.variety_list }}</th>
+         </tr>
+         {% endif %}
+ 
+         {% if i.seed_type %}
+         <tr>
+           <th>Type of seed</th>
+           <th>{{ i.seed_type }}</th>
+         </tr>
+         {% endif %}
+ 
+         {% if i.seed_source %}
+         <tr>
+           <th>Source of seed</th>
+           <th>{{ i.seed_source }}</th>
+         </tr>
+         {% endif %}
+ 
+         {% if i.est_yield %}
+         <tr>
+           <th>Estimated Yield</th>
+           <th>{{ i.est_yield }}</th>
+         </tr>
+         {% endif %}
+ 
+         {% if i.support %}
+         <tr>
+           <th>External support</th>
+           <th>{{ i.support }}</th>
+         </tr>
+         {% endif %}
+ 
+         {% if i.afif_support %}
+         <tr>
+           <th>Support from AFIF</th>
+           <th>{{ i.afif_support }}</th>
+         </tr>
+         {% endif %}
+ 
+         {% if i.lat_lng %}
+         <tr>
+           <th>Location</th>
+           <th>{{ i.lat_lng }}</th>
+         </tr>
+         {% endif %}
+ 
+       </tbody>
+ 
+     </table>
+ 
+     <br>`;
+ 
+   var iconvar = icon_kobo2;
+ 
+   /*
+    * KoboPoshan2 stores coordinates as:
+    *
+    * latitude,longitude
+    *
+    * Example:
+    * 19.123456,73.123456
+    */
+ 
+   var coordinates = "{{ i.lat_lng|escapejs }}".trim().split(',');
+ 
+   var lat = parseFloat(coordinates[0]);
+   var lng = parseFloat(coordinates[1]);
+ 
+   if (
+       Number.isFinite(lat) &&
+       Number.isFinite(lng) &&
+       lat >= -90 &&
+       lat <= 90 &&
+       lng >= -180 &&
+       lng <= 180
+   ) {
+ 
+       var popupOptions = {
+           'maxWidth': '500',
+           'className': 'another-popup'
+       };
+ 
+       var marker = L.marker(
+           [lat, lng],
+           {icon: iconvar}
+       )
+       .addTo(mymap)
+       .bindPopup(table4a, popupOptions);
+ 
+       poshanlayerGroup2.addLayer(marker);
+ 
+       marker.on('click', function (e) {
+           this.openPopup(e.latlng);
+       });
+ 
+   } else {
+ 
+       console.warn(
+           "Skipping KoboPoshan2 record because lat_lng is invalid:",
+           "{{ i.lat_lng|escapejs }}"
+       );
+ 
+   }
+ 
+ </script>
+ 
+ {% endfor %}
  <!-- kobo poshan 2 ends-->
 <script>
   var schoolIcon = L.icon({
