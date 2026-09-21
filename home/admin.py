@@ -7,7 +7,8 @@ from .models import (
     UploadWellPictureModel,
     CensusTable,
     AhmedSchoolForm,
-    KoboPoshan,
+    # KoboPoshan,
+    KoboPoshan2
 )
 
 
@@ -15,7 +16,7 @@ admin.site.register(UploadWellPictureModel)
 admin.site.register(PoshanFormInformation)
 admin.site.register(CensusTable)
 admin.site.register(AhmedSchoolForm)
-admin.site.register(KoboPoshan)
+# admin.site.register(KoboPoshan)
 
 
 @admin.register(UploadPictureModel)
@@ -248,4 +249,66 @@ class UploadPictureModelAdmin(admin.ModelAdmin):
                 )
             },
         ),
+    )
+
+
+
+@admin.register(KoboPoshan2)
+class KoboPoshan2Admin(admin.ModelAdmin):
+
+    list_display = (
+        "endtime1",
+        "owner",
+        "state",
+        "district",
+        "tehsil",
+        "village",
+        "pincode",
+        "nutri_area",
+        "variety_num",
+        "variety_list",
+        "seed_type",
+        "seed_source",
+        "est_yield",
+        "support",
+        "afif_support",
+        "lat_lng",
+    )
+
+    search_fields = (
+        "owner",
+        "state",
+        "district",
+        "tehsil",
+        "village",
+        "pincode",
+        "nutri_area",
+        "variety_list",
+        "seed_type",
+        "seed_source",
+        "support",
+        "afif_support",
+        "lat_lng",
+    )
+
+    list_filter = (
+        "state",
+        "district",
+        "tehsil",
+        "seed_type",
+        "seed_source",
+        "support",
+        "afif_support",
+    )
+
+    ordering = (
+        "-endtime1",
+    )
+
+    date_hierarchy = "endtime1"
+
+    list_per_page = 50
+
+    readonly_fields = (
+        "endtime1",
     )
