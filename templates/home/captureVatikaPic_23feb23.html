@@ -1,0 +1,468 @@
+{% extends 'home/base.html'%}
+{% load static%}
+{% block content %}
+
+<head>  <link type="text/css" href="{% static 'home/css/style.css' %}" rel="stylesheet">
+  <style>
+     #form{
+      width:40%;
+    }
+    #form label{
+      color: black;
+      font-size: 18px;
+    }
+  </style>
+</head>
+  <!-- recipes -->
+  <div class="recipes container grey-text text-darken-1">
+    <img src="{% static 'home/images/main.jpeg'%}"
+           alt="Poshan vatika"
+           class="main-image">
+
+    <p class='msg-box'>Add Nutrigardens Information</p>
+  </div>
+
+  <div class="center">
+    <a class="btn-floating btn-small btn-large add-btn">
+      <i class="material-icons" style=" background-color: #4CAF50;">add</i>
+    </a>
+  </div>
+
+  <!-- add  side nav -->
+  <div id="side-form" class="side-form">
+    <div class="image-options">
+      <div class="camera-div">
+        <a class="btn-floating btn-large capture-btn">
+          <i class="material-icons">camera_alt</i>
+        </a>
+        <hr style="width:50% ;text-align:center;">
+
+        <small>click image from your camera</small>
+      </div>
+      <div class="upload-div">
+        <a href="{% url 'uploadvatikapic' %}" class="btn-floating  btn-large upload-btn">
+          <i class="material-icons">upload</i>
+        </a>
+        <hr style="width:50%;text-align:center;">
+        <small>Upload images</small>
+
+      </div>
+    </div>
+    <div class="capture-div" style='display:none'>
+      <form id= "form" class="container section" method="post">
+        {% csrf_token %}
+        <h6 >Add NutiGarden</h6>
+        <div class="divider"></div>
+          <video id="player" autoplay></video>
+          <canvas id='canvas' width="320px" height="240px" name="picture_name" required></canvas>
+          <div class="input-field center">
+            <a id="capture-btn" class="waves-effect waves-light btn-small" style=" background-color: #4CAF50;">Capture</a>
+          </div>
+  
+          <div id='pick-image'>
+            <small>Allow Camera access to app</small>
+          </div>
+          {% comment %} <div class="input-field">
+            <input placeholder="Enter your name" id="name" type="text" name="name" required>
+            <label for="title">Name</label>
+          </div>          
+          <div class="input-field">
+            <input placeholder="Enter the name of your Nutrigarden" id="nutri_nm" type="text" name="nutri_nm">
+            <label for="title">Name of the nutrigarden</label>
+          </div>
+          <div class="input-field">
+            <input placeholder="Area of the nutrigarden" id="area" type="number" name="area" required>
+            <label for="title">Area(in sq. meters)</label>
+          </div>  
+          <div class="input-field">
+            <input placeholder="Village where nutrigarden is located" id="village" type="text" name="village" required>
+            <label for="title">Village</label>
+          </div>  
+          <div class="input-field">
+            <input placeholder="Enter the district name" id="district" type="text" name="district" required>
+            <label for="title">District</label>
+          </div>  
+          <div class="input-field">
+            <input placeholder="Enter state name" id="state" type="text" name="state" required>
+            <label for="title">State</label>
+          </div>  
+          <div class="input-field">
+            <input placeholder="Enter your pincode" id="pincode" type="text" name="pincode" required>
+            <label for="title">Pincode</label>
+          </div>    
+
+          <div class="input-field">
+            <input placeholder="Allow location access to capture your location" id="lat" type="text" name="lat" readonly="readonly" required>
+            <label for="title">Latitude</label>
+          </div>
+          <div class="input-field">
+            <input placeholder="Allow location access to capture your location" id="lng" type="text" name="lng" readonly="readonly" required>
+            <label for="title">Longitude</label>
+          </div>
+          {% endcomment %}
+          <div class='row'>
+            <div class='input-field col s12'>
+             <span style="float: left; color: black;">Name: </span>
+             <input type="text" class="fieldlabels" placeholder=" Name" name="name" id="name" required>  
+            </div>
+          </div>
+          <div class='row'>
+            <div class='input-field col s12'>
+             <span style="float: left; color: black;" >Name of individual / organization / school under which Nutri-Garden is cultivated  : </span>
+             <input type="text" class="fieldlabels" placeholder=" Organization Name" name="organization" id="organization" required>
+              
+            </div>
+          </div>
+          <div class='row' >
+            <div class='input-field col s12'>
+              <span style="float: left; color: black;">Name of Village: </span>
+              <input type="text" class="fieldlabels" placeholder=" District Name" name="village" id="village" required> 
+            </div> 
+          </div>
+          <div class='row' >
+            <div class='input-field col s12'>
+              <span style="float: left; color: black;">Name of  District: </span>
+              <input type="text" class="fieldlabels" placeholder=" District Name" name="district" id="district " required> 
+            </div>
+          </div>
+          <div class='row' >
+            <div class='input-field col s12'>
+              <span style="float: left; color: black;">Name of State : </span>
+              <input type="text" class="fieldlabels" placeholder=" State Name" name="state" id="state " required> 
+            </div>
+          </div>
+          <div class='row' >
+            <div class='input-field col s12'>
+              <span style="float: left; color: black;">Enter Pincode  : </span>
+              <input type="text" class="fieldlabels" placeholder=" Pincode"  name = "pincode" id = "pincode" required></td>
+            </div>
+           
+          </div>
+          <div class='row' >
+            <div class='input-field col s12'>
+              <span style="float: left; color: black;">Latitude : </span>
+              <input id="lat" type="text" name="lat" class="fieldlabels" placeholder="Enter Latitude"   required>
+            </div>
+          </div>
+    
+          <div class='row' >
+            <div class='input-field col s12'>
+              <span style="float: left; color: black;">Longitude : </span>
+              <input id="lng" type="text" name="lng" class="fieldlabels" placeholder="Enter Longitude" required>
+            </div>
+          </div>
+          <div class='row'>
+            <div class='input-field col s12'>
+              {% comment %} <span>Type of Nutri-Garden:</span><br> {% endcomment %}
+              <span style="float: left; color: black;">Type of Nutri-Garden:</span><br>
+              <p><label><input class="with-gap" name="self_made" type="checkbox" id = "self_made"value = "Individual level-self made" /><span>Individual level-self made</span></label></p><br>
+              <p><label><input  class="with-gap" name="local_ngo" type="checkbox" id = "local_ngo" value = "Individual level-got help from local NGO" /><span>Individual level-got help from local NGO</span></label></p><br>
+              <p><label><input class="with-gap" name="external_support" type="checkbox" id = "external_support"value = "without external support" /><span>Community level- without external support</span></label></p><br>
+              <p><label><input class="with-gap" name="govt_support" type="checkbox" id = "govt_support"value = "through Government support" /><span>Individual level-through Government support</span></label></p><br>
+              <p><label><input class="with-gap" name="community_level" type="checkbox" id = "community_level"value = "with support from external agency" /><span>Community level - with support from external agency</span></label></p><br>
+              <p><label><input class="with-gap" name="school_level" type="checkbox" id = "school_level"value = "School level" /><span>School Nutri-Garden</span></label></p><br>
+              <p><label><input class="with-gap" name="anganwadi" type="checkbox" id = "anganwadi"value = "Anganwadi level" /><span>Anganwadi level Nutri-Garden</span></label></p><br>
+               {% comment %} <p><label><input class="with-gap" name="Other" type="text" id = "self-made" />Others :</label></p><br> {% endcomment %}
+              <p><label><input type="text" class="fieldlabels" placeholder="type of Nutri-Garden" name="others_nutri" id="others_nutri">Others:</label></p><br>
+            </div>
+          </div>
+  
+          <div class='row'>
+            <div class='input-field col s12'>
+              <span style="float: left; color: black;">If getting support from local NGO, name the NGO and locality of NGO </span>
+              <input type="text" class="fieldlabels" placeholder="local NGO name" name="local_ngo" id="local_ngo">
+                    
+            </div>
+          </div>
+          <div class='row'>
+            <div class='input-field col s12'>
+              <span style="float: left; color: black;" >Level of Nutri-Garden</span><br>
+              <p><label><input class="with-gap" name="self_consumption" type="checkbox" id = "self_consumption"value = "self consumption" /><span>For self consumption</span></label></p><br>
+              <p><label><input  class="with-gap" name="surplus_selling" type="checkbox" id = "selling_surplus" value = "selling surplus" /><span>Selling surplus</span></label></p><br>
+              <p><label><input class="with-gap" name="surplus_addition" type="checkbox" id = "surplus_addition" value = "Selling surplus with value addition" /><span>Selling surplus with value addition</span></label></p><br>
+              <p><label><input type="text" class="fieldlabels" placeholder="level of Nutri-Garden" name="others_level" id="others_level">Others:</label></p><br> 
+            </div>
+          </div>
+          <div class='row'>
+            <div class='input-field col s12'>
+             <span style="float: left; color: black;">Nutri-garden scale</span><br>
+             <p><label><input class="with-gap" name="vegetable" type="checkbox" id = "vegetable"value = "veg_and_fruit" /><span>Only for vegetables and fruits</span></label></p><br>
+             <p><label><input  class="with-gap" name="backyard_poultry" type="checkbox" id = "backyard_poultry" value = "poultry" /><span>Backyard Poultry</span></label></p><br>
+             <p><label><input class="with-gap" name="backyard_fishery" type="checkbox" id = "backyard_fishery" value = "fishery" /><span>Backyard Fishery</span></label></p><br> 
+             <p><label><input type="text" class="fieldlabels" placeholder="level of Nutri-Garden" name="others_scale" id="others_scale">Others:</label></p><br> 
+            </div>
+          </div>
+          <div class='row' >
+            <div class='input-field col s8'>
+              <span style="float: left; color: black;"> Are you selling the surplus from Nutri-Garden </span><br>
+              <p><label><input class="with-gap" name="surplus" type="radio" value="yes" id = "chkdyes"/><span>Yes</span></label> </p>
+              <p><label><input  class="with-gap" name="surplus" type="radio" value="no"><span>No</span></label></p>
+            </div>
+          </div>
+  
+          <div id="surplusyes" style="display:none" class="row" >
+            <div class='row'>
+              <div class='input-field col s12'>
+                  <span style="float: left; color: black;">If yes How much surplus you sell per month (in Kg/month)</span>
+                  <input type="text" class="fieldlabels" placeholder="per month" name="month" id="surplus">
+                  
+              </div>
+            </div>
+          </div>
+          
+         
+        <div class='row' >
+          <div class='input-field col s10'>
+            <span style="float: left; color: black;">What standard area of Nutri-Gardens? </span><br>
+            <p><label><input class="with-gap" type="radio" id="one_to_fivehundred" name="one_to_fourthousand_sq" value="Less_than_thousand" ><span>Less than 1000 sq.ft model</span></label></p><br>
+            <p><label><input class="with-gap" type="radio" id="fivehundred_to_1000" name="one_to_fourthousand_sq" value="1000 to 2000"><span>1000 to 2000 sq.ft model</span></label></p><br>
+            <p><label><input class="with-gap" type="radio" id="one_two_thousand" name="one_to_fourthousand_sq" value="2000 to 3000 "><span>2000 to 3000 sq.ft model</span></label></p><br>
+            <p><label><input class="with-gap" type="radio" id="two_four_thousand" name="one_to_fourthousand_sq" value="3000 to 4000"><span>3000 to 4000 sq.ft model</span></label></p><br>
+            <p><label><input class="with-gap" type="radio" id="more4000" name="one_to_fourthousand_sq" value="more_than_four"><span>More than 4000 sq.ft model</span></label></p><br>
+            <p><label><input  class="with-gap" name="one_to_fourthousand_sq" type="text"/><span>Others:</span></label></p><br>
+          </div>
+        </div>
+          <div class='row'>
+            <div class='input-field col s8'>
+              <span style="float: left; color: black;"> Does the NGO/ supporter provide seeds every year?</span><br>
+              <p><label><input class="with-gap" name="seed_ngo" type="radio" value="yes" id = "chkdyes"/><span>Yes</span></label> </p>
+              <p><label><input  class="with-gap" name="seed_ngo" type="radio" value="no" ><span>No</span></label></p>
+            </div>
+          </div>
+          <div class='row'>
+            <div class='input-field col s12'>
+              <span style="float: left; color: black;">Name the Seasonal vegetables grown in Nutri-Garden</span>
+              <input type="text" class="fieldlabels" placeholder="seasonal vegetable" name="seasonal_vegetable" id="seasonal_vegetable">
+                  
+            </div>
+          </div>
+          <div class='row'>
+            <div class='input-field col s12'>
+              <span style="float: left; color: black;">Name the Perennial vegetables grown in Nutri-Garden</span>
+              <input type="text" class="fieldlabels" placeholder="perennial_vegetable" name="perennial_vegetable" id="perennial_vegetable">
+                
+            </div>
+          </div>
+          <div class='row'>
+            <div class='input-field col s12'>
+              <span style="float: left; color: black;">Name the Fruits grown in Nutri-Garden</span>
+              <input type="text" class="fieldlabels" placeholder="fruits" name="fruitsgrown" id="fruitsgrown">
+              
+            </div>
+          </div>
+          <div class='row'>
+            <div class='input-field col s12'>
+              <span style="float: left; color: black;">Average daily Fruit output from Nutri-Garden in Kg/Day</span>
+              <input type="text" class="fieldlabels" placeholder="daily fruits" name="dailyfruit" id="dailyfruits">
+            </div>
+          </div>
+          <div class='row' >
+            <div class='input-field col s8'>
+              <span style="float: left; color: black;">Type of Seeds used in Nutri-Garden</span><br>
+              <p><label><input class="with-gap" name="indigeous" type="radio" value="indigeous"/><span>Indigeous</span></label></p>
+              <p><label><input  class="with-gap" name="indigeous" type="radio" value="hybrid"/><span>Hybrid</span></label></p><br>
+              <p><label><input  class="with-gap" name="indigeous" type="text" /><span>Others:</span></label></p>
+            </div>
+          </div>
+          <div class='row'>
+            <div class='input-field col s10'>
+              <span style="float: left; color: black;"> What is the average monthly income from a Nutri-Garden?</span></br>
+              <p><label><input class="with-gap" name="income" type="radio" value="Less_than_1000" /><span>More than 1000 Rs/month</span></label> </p><br>
+              <p><label><input  class="with-gap" name="income" type="radio" value="1000-2500" ><span>1000 to 2500 Rs/month</span></label></p><br>
+              <p><label><input class="with-gap" name="income" type="radio" value="2500-5000"/><span>2500 to 5000 Rs/month</span></label> </p><br>
+              <p><label><input class="with-gap" name="income" type="radio" value="5000-10000"/><span>5000 to 10000 Rs/month</span></label> </p><br>
+              <p><label><input class="with-gap" name="income" type="radio" value="1000-15000"/><span>10000 to 15000 Rs/month</span></label> </p><br>
+              <p><label><input class="with-gap" name="income" type="radio" value="15000-20000"/><span>15000 to 20000 Rs/month</span></label> </p><br>
+              <p><label><input  class="with-gap" name="income" type="radio" value="Less_than_20000" ><span>Less than 20000 Rs/month</span></label></p><br>
+            </div>  
+          </div>
+          <div class='row'>
+            <div class='input-field col s12'>
+              <span style="float: left; color: black;">Type of Cultivation method in Nutri-Garden</span><br>
+              <p><label><input class="with-gap" name="open_cultivation" type="checkbox" id = "open_cultivation"value = "Open Cultivation" /><span>Open Cultivation</span></label></p><br>
+              <p><label><input  class="with-gap" name="open_cultivation_multilayer" type="checkbox" id = "open_cultivation_multilayer" value = "multilayer croping" /><span>Open Cultivation with multilayer croping</span></label></p><br>
+              <p><label><input class="with-gap" name="protectcultivation_shed_net" type="checkbox" id = "protectcultivation_shed_net" value = "Shed-Net" /><span>Protected Cultivation using Shed-Net</span></label></p><br> 
+              <p><label><input class="with-gap" name="protectcultivation_shed_polyhouse" type="checkbox" id = "protectcultivation_polyhouse" value = "Polyhouse" /><span>Protected Cultivation using Polyhouse</span></label></p><br> 
+              <p><label><input type="text" class="fieldlabels" placeholder="level of Nutri-Garden" name="cultivation_other" id="cultivation_other">Others:</label></p><br> 
+            </div>
+          </div>
+          <div class='row'>
+            <div class='input-field col s12'>
+              <span style="float: left; color: black;">Average per month expenses on Nutri-Garden</span><br>
+              <p><label><input class="with-gap" name="month" type="radio" value="Less than 1000" /><span>Less than 250</span></label> </p><br>
+              <p><label><input  class="with-gap" name="month" type="radio" value="250-500" ><span>250 to 500</span></label></p><br>
+              <p><label><input class="with-gap" name="month" type="radio" value="500-1000"/><span>500 to 1000</span></label> </p><br>
+              <p><label><input class="with-gap" name="month" type="radio" value="1000-2000"/><span>1000 to 2000</span></label> </p><br>
+              <p><label><input class="with-gap" name="month" type="radio" value="Less than 2000"/><span>Less than 2000</span></label> </p><br>
+            </div>  
+          </div>
+          <div class='row'>
+            <div class='input-field col s12'>
+              <span style="float: left; color: black;">Source of Water for irrigation</span><br>
+              <p><label><input class="with-gap" name="well" type="checkbox" id = "well"value = "Well" /><span>Well</span></label></p><br>
+              <p><label><input  class="with-gap" name="bore_well" type="checkbox" id = "bore_well" value = "bore_well" /><span>Bore well</span></label></p><br>
+              <p><label><input class="with-gap" name="pond" type="checkbox" id = "pond" value = "pond" /><span>Pond</span></label></p><br> 
+              <p><label><input class="with-gap" name="river" type="checkbox" id = "river" value = "river" /><span>River</span></label></p><br>
+              <p><label><input class="with-gap" name="canel" type="checkbox" id = "canel" value = "canel" /><span>Canel</span></label></p><br>  
+              <p><label><input class="with-gap" name="nal" type="checkbox" id = "nal" value = "nal" /><span>Nal coup (Sarkari Nal), grey /wastewate </span></label></p><br>
+              <p><label><input type="text" class="fieldlabels" placeholder="source of water" name="source_water" id="source_water">Others:</label></p><br> 
+            </div>
+          </div>
+          <div class='row'>
+            <div class='input-field col s12'>
+              <span style="float: left; color: black;">Irrigation Water Availability</span><br>
+              <p><label><input class="with-gap" name="irrigation" type="radio" value="no_water" /><span>No water available for irrigation</span></label> </p><br>
+              <p><label><input  class="with-gap" name="irrigation" type="radio" value="less_water" ><span>Very less water available</span></label></p><br>
+              <p><label><input class="with-gap" name="irrigation" type="radio" value="sufficient_water"/><span>Sufficient Water available for Nutri-Garden</span></label> </p><br>
+              <p><label><input class="with-gap" name="irrigation" type="radio" value="excess_water"/><span>Excess Water Availablity</span></label> </p><br>
+         
+            </div>  
+          </div>
+          <div class='row'>
+            <div class='input-field col s12'>
+              <span style="float: left; color: black;">Name the organizations / government schemes supporting the school Nutri-Garden</span>
+              <input type="text" class="fieldlabels" placeholder="name the organization" name="school_name" id="school_name">
+              
+            </div>
+          </div>
+          <div class='row'>
+            <div class='input-field col s12'>
+              <span style="float: left; color: black;">Any weekly classes/course work dedicated to Nutri-Garden and training to students?</span>
+              <input type="text" class="fieldlabels" placeholder="Any weekly classes" name="any_weekly_class" id="any_weekly_class">
+            
+            </div>
+          </div>
+          <div class='row'>
+            <div class='input-field col s12'>
+              <span style="float: left; color: black;">Weekly time spent by students in Nutri-Garden</span><br>
+              <p><label><input class="with-gap" name="weekly" type="radio" value="weekly_1" /><span>Weekly 1 hr</span></label> </p><br>
+              <p><label><input  class="with-gap" name="weekly" type="radio" value="weekly_2" ><span>Weekly 2 hr</span></label></p><br>
+              <p><label><input class="with-gap" name="weekly" type="radio" value="weekly_3"/><span>Weekly 3 hr</span></label> </p><br>
+              <p><label><input class="with-gap" name="weekly" type="radio" value="weekly_4"/><span>Weekly 4 hr</span></label> </p><br>
+              <p><label><input class="with-gap" name="weekly" type="radio" value="weekly_5"/><span>Weekly 5 hr</span></label> </p><br>
+              <p><label><input class="with-gap" name="weekly" type="radio" value="more_5"/><span>More than 5 hr</span></label> </p><br>
+       
+            </div>  
+          </div>
+          <div class='row'>
+            <div class='input-field col s12'>
+              <span style="float: left; color: black;">At what scale School Nutri-Garden is operating:</span><br>
+              <p><label><input class="with-gap" name="mid_day_meal" type="checkbox" id = "mid_day_meal"value = "school Mid-day-meal" /><span>Using output in school Mid-day-meal</span></label></p><br>
+              <p><label><input  class="with-gap" name="surplus_selling" type="checkbox" id = "surplus_selling" value = "surplus produce" ><span>Selling the surplus produce from Nutri-Garden</span></label></p><br>
+              <p><label><input class="with-gap" name="openfield_science_lab" type="checkbox" id = "openfield_science_lab"value = "open field science lab" /><span>Using Nutri-Garden as a open field science laboratory</span></label></p><br>
+              <p><label><input class="with-gap" name="hot_cooked_meal" type="checkbox" id = "hot_cooked_meal"value = "hot cooked meal" /><span>Using Nutri-Garden output in hot cooked meal of Anganwadi</span></label></p><br>
+              <p><label><input class="with-gap" name="school_child" type="checkbox" id = "school_child"value = "families of school children" /><span>sharing the excess produce from Nutri-Garden to families of school children</span></label></p><br>
+              <p><label><input type="text" class="fieldlabels" placeholder="scale school nutri-garden" name="school_scale" id="school_scale">Others:</label></p><br>
+       
+            </div>
+          </div>    
+  
+          <div class='row'>
+            <div class='input-field col s12'>
+              <span style="float: left; color: black;">Any Innovative practices in School Nutri-Garden</span>
+              <input type="text" class="fieldlabels" placeholder="Any innovative practices in school" name="any_innovative" id="any_innovative">
+          
+            </div>
+          </div>
+          <div class='row'>
+            <div class='input-field col s12'>
+              <span style="float: left; color: black;">Category</span><br>
+              <p><label><input class="with-gap" name="type" type="radio" value="AFIF" /><span>AFIF</span></label> </p><br>
+              <p><label><input  class="with-gap" name="type" type="radio" value="Poshanvatika" ><span>Poshanvatika</span></label></p><br>
+              <!-- <p><label><input class="with-gap" name="type" type="radio" value="nutrigarden"/><span>Nutri-garden</span></label></p><br> -->
+              
+            </div>  
+          </div>
+     
+          <div class="input-section center">
+          <a id="location-btn" class="waves-effect waves-light btn-small" style=" background-color: #4CAF50; visibility: hidden;">Get Location</a>
+  
+            <div class="preloader-wrapper small active" id="location-loader">
+              <div class="spinner-layer spinner-green-only">
+                <div class="circle-clipper left">
+                  <div class="circle"></div>
+                </div><div class="gap-patch">
+                  <div class="circle"></div>
+                </div><div class="circle-clipper right">
+                  <div class="circle"></div>
+                </div>
+              </div>
+            </div>
+  
+          </div>
+  
+          
+          <div class="input-field center">
+            <button class="btn-small" type="submit" name="action" style=" background-color: #4CAF50;">Submit</button>
+          </div>
+      </form>
+      <script>
+        window.onload = function(){
+  document.getElementById('location-btn').click();
+}
+      </script>
+      <script>
+
+        $(function() {
+           $("input[name='afif']").click(function() {
+             if ($("#chkno").is(":checked")) {
+               $("#text").show();
+             } else {
+               $("#text").hide();
+             }
+           });
+         });
+      
+         $(function() {
+           $("input[name='ifAFIF']").click(function() {
+             if ($("#afifyes").is(":checked")) {
+               $("#afiftext").show();
+             } else {
+               $("#afiftext").hide();
+             }
+           });
+         });
+      
+         $(function() {
+           $("input[name='prodCompany']").click(function() {
+             if ($("#chkyes").is(":checked")) {
+               $("#yesComp").show();
+             } else {
+               $("#yesComp").hide();
+             }
+           });
+         });
+      
+         $(function() {
+           $("input[name='surplus']").click(function() {
+             if ($("#chkdyes").is(":checked")) {
+               $("#surplusyes").show();
+             } else {
+               $("#surplusyes").hide();
+             }
+           });
+         });
+        </script>
+    </div>
+
+    
+    <!-- <div style="display:none ">
+      <form class="container section" enctype="multipart/form-data"method="post">
+        {% csrf_token %}
+          {{form.as_p}}
+          <button class="btn-small" type="submit" name="action" style=" background-color: #4CAF50;">Add</button>
+      </form>
+    </div> -->
+
+
+    <div class="center">
+      <a class="btn-floating btn-small btn-large close-btn">
+        <i class="material-icons" style=" background-color: #4CAF50;">close</i>
+      </a>
+    </div>
+  </div>
+ 
+ 
+  {% endblock %}
+
+  

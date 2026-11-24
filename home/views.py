@@ -268,13 +268,14 @@ def viewVatikas(request):
     vatikas3 = KoboPoshan.objects.all()
     vatikas3a = KoboPoshan2.objects.all()
     kobovatiakscount = KoboPoshan.objects.count()+ KoboPoshan2.objects.count()
+    kobo2vatiakscount = (KoboPoshan2.objects.annotate(year=ExtractYear('endtime1')).values('year').annotate(count=Count('*')).order_by('year'))    
     vatikas2 = UploadPictureModel.objects.filter(type='AFIF')
     selfcons = PoshanFormInformation.objects.filter(level_nutri_garden='for_self_consumption',nutri_garden_scale ='Only for vegetables and fruits, Backyard Poultry')
     selfconscount =selfcons.count()
     sellsurp = PoshanFormInformation.objects.filter(level_nutri_garden='selling_surplus')
     sellsurpcount = sellsurp.count()
-    context = {'vatikas1': vatikas1,'vatikas2': vatikas2, 'vatikas':vatikas,'selfcons':selfcons,'sellsurp':sellsurp,'vatikas3':vatikas3,'vatikas3a':vatikas3a,'vatikascount':vatikascount,'onlinevatikascount':onlinevatikascount,'kobovatiakscount':kobovatiakscount,'AFIF_yearly_counts':AFIF_yearly_counts,'selfconscount':selfconscount,'sellsurpcount':sellsurpcount,'view_name': view_name,'is_view_Vatikas': view_name == 'viewVatikas' }
-    # context = {'wells': wells, 'mylist':mylist}
+    # context = {'vatikas1': vatikas1,'vatikas2': vatikas2, 'vatikas':vatikas,'selfcons':selfcons,'sellsurp':sellsurp,'vatikas3':vatikas3,'vatikas3a':vatikas3a,'vatikascount':vatikascount,'onlinevatikascount':onlinevatikascount,'kobovatiakscount':kobovatiakscount,'AFIF_yearly_counts':AFIF_yearly_counts,'selfconscount':selfconscount,'sellsurpcount':sellsurpcount,'view_name': view_name,'is_view_Vatikas': view_name == 'viewVatikas' }
+    context = {'vatikas3a':vatikas3a,'kobo2vatiakscount':kobo2vatiakscount}
     return render(request, 'home/viewVatikas.html', context )
     # return render(request, 'map/map.html', context)
 def viewsarkarivatikas(request):

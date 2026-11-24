@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Indian Airports Map</title>
+
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
+
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<h2 style="text-align:center;">Indian Airports Interactive Map</h2>
+
+<div id="map"></div>
+
+<script>
+    // Initialize map centered on India
+    var map = L.map('map').setView([22.9734, 78.6569], 5);
+
+    // OSM Layer
+    var osm = L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+            attribution: '© OpenStreetMap contributors'
+        }
+    ).addTo(map);
+
+    // Satellite Layer
+    var satellite = L.tileLayer(
+        'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'
+    );
+
+    // Layer control
+    var baseMaps = {
+        "OpenStreetMap": osm,
+        "Satellite": satellite
+    };
+
+    L.control.layers(baseMaps).addTo(map);
+
+    // Add airport markers
+    {% for airport in airports %}
+        L.marker([{{ airport.latitude_deg }}, {{ airport.longitude_deg }}])
+            .addTo(map)
+            .bindPopup(`
+                <b>{{ airport.name }}</b><br>
+                City: {{ airport.municipality }}<br>
+                IATA: {{ airport.iata_code }}<br>
+                ICAO: {{ airport.icao_code }}<br>
+                Elevation: {{ airport.elevation_ft }} ft <br>
+                Type: {{airport.type}} <br>
+                Municiaplity: {{airport.municipality}} <br>
+
+            `);
+    {% endfor %}
+
+</script>
+
+</body>
+</html>

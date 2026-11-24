@@ -1,0 +1,160 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-29 06:21+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: home/views.py:502 home/views_6feb23.py:477 home/views_6march23.py:500
+msgid "Your data is submitted successfully!"
+msgstr "आपला डाटा सफलतापूर्वक सबमिट केला गेला आहे"
+
+#: templates/home/base.html:166
+msgid "PoshanVatika"
+msgstr "पोषण वाटीका "
+
+#: templates/home/base.html:167
+msgid " - Welcome Guest"
+msgstr "- आपले स्वागत आहे"
+
+#: templates/home/base.html:181 templates/home/base.html:234
+msgid "About"
+msgstr "जाणून घ्या"
+
+#: templates/home/base.html:182
+msgid "My Poshanvatikas"
+msgstr "माझ्या पोषण वाटीका"
+
+#: templates/home/base.html:184
+msgid "Beneficiaries"
+msgstr "लाभार्थी"
+
+#: templates/home/base.html:185 templates/home/base.html:238
+msgid "Compendiums"
+msgstr "सारांश"
+
+#: templates/home/base.html:188
+msgid "Marketplace"
+msgstr "बाजार"
+
+#: templates/home/base.html:194 templates/home/base.html:241
+msgid "Contact"
+msgstr "संपर्क"
+
+#: templates/home/base.html:224 templates/home/base.html:323
+#: templates/home/viewVatikas.html:89
+msgid "POSHANVATIKA"
+msgstr "पोषण वाटीका"
+
+#: templates/home/base.html:226
+msgid "- Welcome {{ user.username }}"
+msgstr "- स्वागत आहे {{ आपले. नाव }}"
+
+#: templates/home/base.html:228
+msgid "- Welcome Guest"
+msgstr "- स्वागत आहे"
+
+#: templates/home/base.html:235
+msgid "My Pohanvatikas"
+msgstr "माझ्या पोषण वाटिका "
+
+#: templates/home/base.html:237
+msgid "Nutrition Beneficiaries"
+msgstr "पोषण लाभार्थी"
+
+#: templates/home/base.html:240
+msgid "News"
+msgstr "समाचार"
+
+#: templates/home/base.html:243 templates/home/base.html:324
+msgid "Map"
+msgstr "नकाशा"
+
+#: templates/home/base.html:244 templates/home/base.html:326
+msgid "Reports(coming soon)"
+msgstr "रिपोर्टस (लवकरच अपलोड करू) "
+
+#: templates/home/base.html:246 templates/home/base.html:328
+msgid "Feedback(coming soon)"
+msgstr "अभिप्राय (लवकरच अपलोड करू)"
+
+#: templates/home/base.html:254 templates/home/viewVatikas.html:61
+msgid "Logout"
+msgstr "लॉग आउट"
+
+#: templates/home/base.html:256 templates/home/viewVatikas.html:63
+msgid "Login"
+msgstr "लॉग इन"
+
+#: templates/home/base.html:257 templates/home/viewVatikas.html:64
+msgid "Register"
+msgstr "नोंदणी करा"
+
+#: templates/home/base.html:263 templates/home/viewVatikas.html:70
+msgid "DATA CONTRIBUTION AND FORMS"
+msgstr "डेटा योगदान आणि फॉर्म"
+
+#: templates/home/base.html:266 templates/home/viewVatikas.html:73
+msgid "PoshanVaitka Form"
+msgstr "पोषण वाटिका फॉर्म "
+
+#: templates/home/base.html:267 templates/home/viewVatikas.html:74
+msgid "Capture PoshanVatikas"
+msgstr "पोषण वाटिका चे फोटो टाका"
+
+#: templates/home/base.html:269 templates/home/viewVatikas.html:76
+msgid "Capture Wells"
+msgstr "विहिरींचे फोटो टाका"
+
+#: templates/home/base.html:271 templates/home/viewVatikas.html:78
+msgid "Capture Seed"
+msgstr "बीयणांची नोंदणी करा"
+
+#: templates/home/base.html:272 templates/home/viewVatikas.html:79
+msgid "View All PoshanVatikas"
+msgstr "सर्व पोषण वाटिका दाखवा"
+
+#: templates/home/base.html:273 templates/home/viewVatikas.html:80
+msgid "View Wells Data"
+msgstr "सर्व विहीरींचा डाटा दाखवा"
+
+#: templates/home/base.html:274 templates/home/viewVatikas.html:81
+msgid "View Wells"
+msgstr "विहिरी दाखवा"
+
+#: templates/home/base.html:276 templates/home/viewVatikas.html:83
+msgid "Archived PoshanVatikas"
+msgstr "संग्रहित पोषण वाटिका"
+
+#: templates/home/viewVatikas.html:57
+msgid "USER AUTHENTICATION"
+msgstr "उपभोक्ता प्रमाणीकरण"
+
+#: templates/home/viewVatikas.html:91
+msgid "Reports(coming soon..)"
+msgstr "रिपोर्टस (लवकरच अपलोड करू)"
+
+#: templates/home/viewVatikas.html:93
+msgid "Feedback(coming soon..)"
+msgstr "अभिप्राय (लवकरच अपलोड करू)"
+
+#: templates/home/viewVatikas.html:96
+msgid "Current Language:"
+msgstr "सध्याची भाषा"
+
+#: templates/home/viewVatikas.html:97
+msgid "Available Languages:"
+msgstr "उपलब्ध भाषा"

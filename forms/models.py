@@ -267,3 +267,5 @@ class BasicInformationModel(models.Model):
 #     finishingMonth = models.CharField(choices = month, max_length = 100, blank=True,null = True)
 #     soldQuant = models.IntegerField(blank=True,null = True)
 #     consumedQuant = models.IntegerField(blank=True,null = True)
+
+
