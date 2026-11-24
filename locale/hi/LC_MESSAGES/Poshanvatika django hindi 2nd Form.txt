@@ -1,0 +1,806 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-07-10 07:57+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: home/forms.py:28 home/models.py:173
+msgid "Picture"
+msgstr ""
+
+#: home/forms.py:29
+msgid "Name"
+msgstr "नाम"
+
+#: home/forms.py:30
+msgid "Nutrient Name"
+msgstr "नाम"
+
+#: home/forms.py:31
+msgid "Area"
+msgstr "जगह"
+
+#: home/forms.py:32 home/models.py:167
+msgid "Village"
+msgstr "गांव"
+
+#: home/forms.py:33
+msgid "District"
+msgstr "जिला"
+
+#: home/forms.py:34 home/models.py:169
+msgid "State"
+msgstr "राज्य"
+
+#: home/forms.py:35 templates/home/captureVatikaPic.html:112
+msgid "Pincode"
+msgstr "पिनकोड"
+
+#: home/forms.py:36
+msgid "Latitude"
+msgstr "लॅटिट्यूड"
+
+#: home/forms.py:37
+msgid "Longitude"
+msgstr "लोंजीट्यूड"
+
+#: home/forms.py:40
+msgid "Upload a picture"
+msgstr "फ़ोटो लीजिए"
+
+#: home/forms.py:41
+msgid "Enter your name"
+msgstr "आपका नाम लिखें"
+
+#: home/forms.py:42
+msgid "Enter the nutrient name"
+msgstr "पोषकतत्व का नाम लिखें"
+
+#: home/forms.py:43
+msgid "Enter the area"
+msgstr "आपके क्षेत्र का नाम लिखें"
+
+#: home/forms.py:44
+msgid "Enter the village"
+msgstr "गांव का नाम लिखें"
+
+#: home/forms.py:45
+msgid "Enter the district"
+msgstr "जिले का नाम लिखें"
+
+#: home/forms.py:46
+msgid "Enter the state"
+msgstr "राज्य का नाम लिखें"
+
+#: home/forms.py:47
+msgid "Enter the pincode"
+msgstr "पिनकोड डालें"
+
+#: home/forms.py:48
+msgid "Enter the latitude"
+msgstr "लॅटिट्यूड डालें"
+
+#: home/forms.py:49
+msgid "Enter the longitude"
+msgstr "लोंजीट्यूड डालें"
+
+#: home/models.py:164 templates/home/captureVatikaPic.html:81
+#, fuzzy
+#| msgid "Beneficiaries"
+msgid "Beneficiary Name"
+msgstr "लाभार्थी का नाम"
+
+#: home/views.py:520 home/views_6feb23.py:477 home/views_6march23.py:500
+msgid "Your data is submitted successfully!"
+msgstr "आपका डाटा सफलता पूर्वक सबमिट कर दिया गया हैं"
+
+#: templates/home/base.html:166
+msgid "PoshanVatika"
+msgstr "पोषण वाटिका"
+
+#: templates/home/base.html:167
+msgid " - Welcome Guest"
+msgstr "- आपका स्वागत हैं"
+
+#: templates/home/base.html:181 templates/home/base.html:234
+msgid "About"
+msgstr "बारे में"
+
+#: templates/home/base.html:182
+msgid "My Poshanvatikas"
+msgstr "मेरी पोषणवाटिकाएं "
+
+#: templates/home/base.html:184
+msgid "Beneficiaries"
+msgstr "लाभार्थी"
+
+#: templates/home/base.html:185 templates/home/base.html:238
+msgid "Compendiums"
+msgstr "सारसारांश"
+
+#: templates/home/base.html:188 templates/home/base.html:239
+msgid "Marketplace"
+msgstr "बाजार"
+
+#: templates/home/base.html:194 templates/home/base.html:241
+msgid "Contact"
+msgstr "संपर्क"
+
+#: templates/home/base.html:224 templates/home/base.html:242
+#: templates/home/base.html:322 templates/home/sarkari.html:122
+#: templates/home/viewVatikas.html:108
+msgid "POSHANVATIKA"
+msgstr "पोषण वाटिका"
+
+#: templates/home/base.html:226
+msgid "- Welcome {{ user.username }}"
+msgstr "- स्वागत हैं {{ आपका  . नाम }"
+
+#: templates/home/base.html:228
+msgid "- Welcome Guest"
+msgstr "- आपका स्वागत हैं"
+
+#: templates/home/base.html:235
+msgid "My Pohanvatikas"
+msgstr "मेरी पोषण वाटिकाएं "
+
+#: templates/home/base.html:237
+msgid "Nutrition Beneficiaries"
+msgstr "पोषण लाभार्थी"
+
+#: templates/home/base.html:240
+msgid "News"
+msgstr "समाचार"
+
+#: templates/home/base.html:243 templates/home/base.html:323
+msgid "Map"
+msgstr "नक्शा"
+
+#: templates/home/base.html:244 templates/home/base.html:325
+msgid "Reports(coming soon)"
+msgstr "रिपोर्ट्स (जल्द ही अपलोड करेंगे)"
+
+#: templates/home/base.html:246 templates/home/base.html:327
+msgid "Feedback(coming soon)"
+msgstr "अभिप्राय(जल्द ही अपलोड करेंगे)"
+
+#: templates/home/base.html:254 templates/home/base.html:337
+#: templates/home/sarkari.html:92 templates/home/viewVatikas.html:78
+msgid "Logout"
+msgstr "लॉग आउट"
+
+#: templates/home/base.html:256 templates/home/base.html:339
+#: templates/home/sarkari.html:94 templates/home/viewVatikas.html:80
+msgid "Login"
+msgstr "लॉग इन"
+
+#: templates/home/base.html:257 templates/home/base.html:340
+#: templates/home/sarkari.html:95 templates/home/viewVatikas.html:81
+msgid "Register"
+msgstr "पंजीकरण"
+
+#: templates/home/base.html:263 templates/home/base.html:362
+#: templates/home/sarkari.html:101 templates/home/viewVatikas.html:87
+msgid "DATA CONTRIBUTION AND FORMS"
+msgstr "डाटा संग्रह और फॉर्म"
+
+#: templates/home/base.html:266 templates/home/base.html:365
+#: templates/home/sarkari.html:104 templates/home/viewVatikas.html:90
+msgid "PoshanVaitka Form"
+msgstr "पोषण वाटिका फॉर्म"
+
+#: templates/home/base.html:267 templates/home/base.html:366
+#: templates/home/sarkari.html:105 templates/home/viewVatikas.html:91
+msgid "Capture PoshanVatikas"
+msgstr "पोषण वाटिका का फ़ोटो लें"
+
+#: templates/home/base.html:269 templates/home/base.html:368
+#: templates/home/sarkari.html:107 templates/home/viewVatikas.html:93
+msgid "Capture Wells"
+msgstr "कुआँ  का फ़ोटो लें"
+
+#: templates/home/base.html:271 templates/home/base.html:370
+#: templates/home/sarkari.html:109 templates/home/viewVatikas.html:95
+msgid "Capture Seed"
+msgstr "बीजों का फ़ोटो लें "
+
+#: templates/home/base.html:272 templates/home/base.html:371
+#: templates/home/sarkari.html:110 templates/home/viewVatikas.html:96
+msgid "View All PoshanVatikas"
+msgstr "सभी पोषण वाटिका दिखाएं"
+
+#: templates/home/base.html:273 templates/home/base.html:372
+#: templates/home/sarkari.html:113 templates/home/viewVatikas.html:99
+msgid "View Wells Data"
+msgstr "कूँओं का डाटा दिखाएं"
+
+#: templates/home/base.html:274 templates/home/base.html:373
+#: templates/home/sarkari.html:114 templates/home/viewVatikas.html:100
+msgid "View Wells"
+msgstr "कुआँ दिखाएं"
+
+#: templates/home/base.html:276 templates/home/base.html:375
+#: templates/home/sarkari.html:116 templates/home/viewVatikas.html:102
+msgid "Archived PoshanVatikas"
+msgstr "संग्रहित पोषण वाटिका"
+
+#: templates/home/captureVatikaPic.html:25
+#, fuzzy
+#| msgid "- Welcome Guest"
+msgid "Welcome, "
+msgstr "- आपका स्वागत है"
+
+#: templates/home/captureVatikaPic.html:29
+#, fuzzy
+#| msgid "PoshanVatika"
+msgid "Poshan vatika"
+msgstr "पोषण वाटिका"
+
+#: templates/home/captureVatikaPic.html:36
+msgid "Add Nutrigardens Information"
+msgstr "पोषण वाटिकाओं की जानकारी जोड़ें"
+
+#: templates/home/captureVatikaPic.html:54
+msgid "Click image from your camera"
+msgstr "अपने कैमरे से फ़ोटो क्लिक करें"
+
+#: templates/home/captureVatikaPic.html:60
+msgid "Upload images"
+msgstr "पोषण वाटिका फ़ोटो अपलोड करें "
+
+#: templates/home/captureVatikaPic.html:66
+msgid "Add NutriGarden"
+msgstr "पोषण वाटिका  की जानकारी दें"
+
+#: templates/home/captureVatikaPic.html:71
+#, fuzzy
+#| msgid "Capture Seed"
+msgid "Capture"
+msgstr "बीजों का फ़ोटो लें "
+
+#: templates/home/captureVatikaPic.html:74
+msgid "Allow Camera access to app"
+msgstr "ऐप को कैमरा एक्सेस की अनुमति दें"
+
+#: templates/home/captureVatikaPic.html:80
+#, fuzzy
+#| msgid "Beneficiaries".
+msgid "Beneficiary Name:"
+msgstr "लाभार्थी"
+
+#: templates/home/captureVatikaPic.html:87
+msgid ""
+"Name of individual / organization / school under which Nutri-Garden is "
+"cultivated:"
+msgstr "व्यक्ति/संगठन/स्कूल का नाम जिसके अंतर्गत पोषण वाटिका है"
+
+#: templates/home/captureVatikaPic.html:88
+msgid "Organization Name"
+msgstr "संगठन का नाम"
+
+#: templates/home/captureVatikaPic.html:93
+msgid "Name of Village:"
+msgstr "गांव का नाम"
+
+#: templates/home/captureVatikaPic.html:94
+#, fuzzy
+#| msgid "Nutrient Name"
+msgid "Village Name"
+msgstr "गांव का नाम"
+
+#: templates/home/captureVatikaPic.html:99
+msgid "Name of District:"
+msgstr "जिला का नाम"
+
+#: templates/home/captureVatikaPic.html:100
+#, fuzzy
+#| msgid "Nutrient Name"
+msgid "District Name"
+msgstr "जिला का नाम"
+
+#: templates/home/captureVatikaPic.html:105
+msgid "Name of State:"
+msgstr "राज्य का नाम"
+
+#: templates/home/captureVatikaPic.html:106
+#, fuzzy
+#| msgid "Nutrient Name"
+msgid "State Name"
+msgstr "राज्य का नाम"
+
+#: templates/home/captureVatikaPic.html:111
+msgid "Enter Pincode:"
+msgstr "पिनकोड डालिए"
+
+#: templates/home/captureVatikaPic.html:117
+msgid "Latitude:"
+msgstr "लॅटिट्यूड"
+
+#: templates/home/captureVatikaPic.html:118
+msgid "Enter Latitude"
+msgstr "लॅटिट्यूड डालिए"
+
+#: templates/home/captureVatikaPic.html:123
+msgid "Longitude:"
+msgstr "लोंजीट्यूड"
+
+#: templates/home/captureVatikaPic.html:124
+msgid "Enter Longitude"
+msgstr "लोंजीट्यूड डालिए"
+
+#: templates/home/captureVatikaPic.html:129
+#, fuzzy
+#| msgid "Add NutriGarden"
+msgid "Type of Nutri-Garden:"
+msgstr "पोषणवाटिका  जोड़ें"
+
+#: templates/home/captureVatikaPic.html:130
+msgid "Individual level-self made"
+msgstr "व्यक्तिगत खुद से बनाई गयी"
+
+#: templates/home/captureVatikaPic.html:131
+msgid "Individual level-got help from local NGO"
+msgstr "व्यक्तिगत - स्थानिक संस्था से मदद"
+
+#: templates/home/captureVatikaPic.html:132
+msgid "Community level- without external support"
+msgstr "सामुदायिक स्तर - बाहर से मदद लिए बिना"
+
+#: templates/home/captureVatikaPic.html:133
+msgid "Individual level-through Government support"
+msgstr "व्यक्तिगत - सरकारी सहायता से"
+
+#: templates/home/captureVatikaPic.html:134
+msgid "Community level - with support from external agency"
+msgstr "सामुदायिक स्तर - बाहरी सहायता से"
+
+#: templates/home/captureVatikaPic.html:135
+#, fuzzy
+#| msgid "Add NutriGarden"
+msgid "School Nutri-Garden"
+msgstr "पोषण वाटिका जोड़ें"
+
+#: templates/home/captureVatikaPic.html:136
+#, fuzzy
+#| msgid "Add NutriGarden"
+msgid "Anganwadi level Nutri-Garden"
+msgstr "पोषण वाटिका जोड़ें"
+
+#: templates/home/captureVatikaPic.html:137
+#, fuzzy
+#| msgid "Add NutriGarden"
+msgid "Type of Nutri-Garden"
+msgstr "पोषण वाटिका जोड़ें"
+
+#: templates/home/captureVatikaPic.html:137
+#: templates/home/captureVatikaPic.html:162
+#: templates/home/captureVatikaPic.html:171
+#: templates/home/captureVatikaPic.html:199
+#: templates/home/captureVatikaPic.html:244
+#: templates/home/captureVatikaPic.html:256
+#: templates/home/captureVatikaPic.html:268
+#: templates/home/captureVatikaPic.html:290
+#: templates/home/captureVatikaPic.html:337
+msgid "Others:"
+msgstr "अन्य"
+
+#: templates/home/captureVatikaPic.html:143
+msgid "If getting support from local NGO, name the NGO and locality of NGO"
+msgstr "यदि स्थानीय संस्था से समर्थन मिल रहा है, तो संस्था क्षेत्र का नाम बताएं"
+
+#: templates/home/captureVatikaPic.html:145
+msgid "Local NGO Name and Locality"
+msgstr "स्थानीय संस्था का नाम और क्षेत्र"
+
+#: templates/home/captureVatikaPic.html:151
+msgid ""
+"If getting support from Government, name of the Department/ Ministry "
+"providing support"
+msgstr "यदि सरकार से सहायता मिल रही है तो विभाग/मंत्रालय का नाम दें"
+"समर्थन प्रदान करना"
+
+#: templates/home/captureVatikaPic.html:152
+msgid "Government Department/Ministry"
+msgstr "सरकारी विभाग/मंत्रालय "
+
+#: templates/home/captureVatikaPic.html:158
+#, fuzzy
+#| msgid "Add NutriGarden"
+msgid "Level of Nutri-Garden"
+msgstr "पोषण वाटिका का स्तर"
+
+#: templates/home/captureVatikaPic.html:159
+msgid "For self consumption"
+msgstr "खुद के लिए"
+
+#: templates/home/captureVatikaPic.html:160
+msgid "Selling surplus"
+msgstr "ज्यादा उपज बिक्री के लिए"
+
+#: templates/home/captureVatikaPic.html:161
+msgid "Selling surplus with value addition"
+msgstr "अतिरिक्त उपज का मूल्य वर्धन करके बिक्री"
+
+#: templates/home/captureVatikaPic.html:162
+#: templates/home/captureVatikaPic.html:171
+#, fuzzy
+#| msgid "Add NutriGarden"
+msgid "level of Nutri-Garden"
+msgstr "पोषण वाटिका का स्तर"
+
+#: templates/home/captureVatikaPic.html:167
+#, fuzzy
+#| msgid "Nutrient Name"
+msgid "Nutri-garden scale"
+msgstr "पोषण वाटिका का स्तर"
+
+#: templates/home/captureVatikaPic.html:168
+msgid "Only for vegetables and fruits"
+msgstr "सिर्फ सब्जी और फलों के लिए"
+
+#: templates/home/captureVatikaPic.html:169
+msgid "Backyard Poultry"
+msgstr "मुर्गीपालन"
+
+#: templates/home/captureVatikaPic.html:170
+msgid "Backyard Fishery"
+msgstr ""मत्स्यपालन 
+
+#: templates/home/captureVatikaPic.html:176
+msgid "Are you selling the surplus from Nutri-Garden"
+msgstr "क्या आप पोषण वाटिका की अतिरिक्त उपज बेच रहे हैं?"
+
+#: templates/home/captureVatikaPic.html:177
+#: templates/home/captureVatikaPic.html:206
+msgid "Yes"
+msgstr "हां"
+
+#: templates/home/captureVatikaPic.html:178
+#: templates/home/captureVatikaPic.html:207
+msgid "No"
+msgstr "नहीं"
+
+#: templates/home/captureVatikaPic.html:185
+msgid "If yes How much surplus you sell per month (in Kg/month)"
+msgstr "यदि हाँ तो आप प्रति माह कितनी उपज बेचते हैं (किलो/माह में)"
+
+#: templates/home/captureVatikaPic.html:186
+msgid "per month"
+msgstr "प्रति माह"
+
+#: templates/home/captureVatikaPic.html:193
+msgid "What standard area of Nutri-Gardens?"
+msgstr "पोषण वाटिका का मानक क्षेत्र"
+
+#: templates/home/captureVatikaPic.html:194
+msgid "Less than 1000 sq.ft model"
+msgstr "100 स्क्वे फिट से कम वाला मोडेल"
+
+#: templates/home/captureVatikaPic.html:195
+msgid "1000 to 2000 sq.ft model"
+msgstr "1000 से 2000 स्क्वे फिट वाला मोडेल"
+
+#: templates/home/captureVatikaPic.html:196
+msgid "2000 to 3000 sq.ft model"
+msgstr "2000 से 3000 स्क्वे फिट वाला मोडेल"
+
+#: templates/home/captureVatikaPic.html:197
+msgid "3000 to 4000 sq.ft model"
+msgstr "3000 से 4000 स्क्वे फिट वाला मोडेल"
+
+#: templates/home/captureVatikaPic.html:198
+msgid "More than 4000 sq.ft model"
+msgstr "4000 स्क्वे फिट से बडा वाला मोडेल"
+
+#: templates/home/captureVatikaPic.html:205
+msgid "Does the NGO/ supporter provide seeds every year?"
+msgstr "क्या संस्था/समर्थक हर साल बीज उपलब्ध कराते हैं?"
+
+#: templates/home/captureVatikaPic.html:213
+msgid "Name the Seasonal vegetables grown in Nutri-Garden"
+msgstr "पोषण वाटिका में उगाई जाने वाली मौसमी सब्जियों के नाम बताइए"
+
+#: templates/home/captureVatikaPic.html:214
+msgid "seasonal vegetable"
+msgstr "मौसमी सब्जियां"
+
+#: templates/home/captureVatikaPic.html:220
+msgid "Name the Perennial vegetables grown in Nutri-Garden"
+msgstr "पोषण वाटिका में उगाई जाने वाली बारहमासी सब्जियों के नाम बताइए"
+
+#: templates/home/captureVatikaPic.html:221
+msgid "perennial vegetable"
+msgstr "बारहमासी सब्जियां"
+
+#: templates/home/captureVatikaPic.html:227
+msgid "Name the Fruits grown in Nutri-Garden"
+msgstr "पोषण वाटिका में लगाए हुए फल"
+
+#: templates/home/captureVatikaPic.html:228
+msgid "fruits"
+msgstr "फल"
+
+#: templates/home/captureVatikaPic.html:234
+msgid "Average daily Fruit output from Nutri-Garden in Kg/Day"
+msgstr "पोषण वाटिका से दैनिक फलोंका औसत उत्पादन किलोग्राम/दिन"
+
+#: templates/home/captureVatikaPic.html:235
+msgid "daily fruits"
+msgstr "दैनिक फल"
+
+#: templates/home/captureVatikaPic.html:241
+msgid "Type of Seeds used in Nutri-Garden"
+msgstr "पोषण वाटिका में प्रयुक्त बीजों के प्रकार"
+
+#: templates/home/captureVatikaPic.html:242
+msgid "Indigeous"
+msgstr "देसी"
+
+#: templates/home/captureVatikaPic.html:243
+msgid "Hybrid"
+msgstr "संकरित"
+
+#: templates/home/captureVatikaPic.html:250
+msgid "What is the average monthly income from a Nutri-Garden?"
+msgstr "पोषण वाटिका से औसत मासिक आय क्या है?"
+
+#: templates/home/captureVatikaPic.html:251
+msgid "0 to 500 Rs"
+msgstr "0 से 500 रु"
+
+#: templates/home/captureVatikaPic.html:252
+msgid "500 to 2000 Rs"
+msgstr "500 से 2000 रु"
+
+#: templates/home/captureVatikaPic.html:253
+msgid "2000 to 5000 Rs"
+msgstr "2000 से 5000 रु"
+
+#: templates/home/captureVatikaPic.html:254
+msgid "5000 to 10000 Rs"
+msgstr "5000 से 10000 रु"
+
+#: templates/home/captureVatikaPic.html:255
+msgid "More than 10000 Rs"
+msgstr "10000 रु से ज्यादा"
+
+#: templates/home/captureVatikaPic.html:263
+msgid "Type of Cultivation method in Nutri-Garden"
+msgstr "पोषण वाटिका में खेती विधि का प्रकार"
+
+#: templates/home/captureVatikaPic.html:264
+msgid "Open Cultivation"
+msgstr "खुली खेती"
+
+#: templates/home/captureVatikaPic.html:265
+msgid "Open Cultivation with multilayer croping"
+msgstr "मल्टीलेयर क्रॉपिंग के साथ खुली खेती"
+
+#: templates/home/captureVatikaPic.html:266
+msgid "Protected Cultivation using Shed-Net"
+msgstr "शेड-नेट का उपयोग करके संरक्षित खेती"
+
+#: templates/home/captureVatikaPic.html:267
+msgid "Protected Cultivation using Polyhouse"
+msgstr "पॉलीहाउस का उपयोग करके संरक्षित खेती"
+
+#: templates/home/captureVatikaPic.html:273
+msgid "Average per month expenses on Nutri-Garden"
+msgstr "पोषण वाटिका पर प्रति माह औसत खर्च"
+
+#: templates/home/captureVatikaPic.html:274
+msgid "Less than 250"
+msgstr "250 से कम"
+
+#: templates/home/captureVatikaPic.html:275
+msgid "250 to 500"
+msgstr "250 से 500"
+
+#: templates/home/captureVatikaPic.html:276
+msgid "500 to 1000"
+msgstr "500 से 1000"
+
+#: templates/home/captureVatikaPic.html:277
+msgid "1000 to 2000"
+msgstr "1000 से 2000
+
+#: templates/home/captureVatikaPic.html:278
+msgid "Less than 2000"
+msgstr "2000 से कम"
+
+#: templates/home/captureVatikaPic.html:283
+msgid "Source of Water for irrigation"
+msgstr "सिंचाई के लिए जल का स्रोत"
+
+#: templates/home/captureVatikaPic.html:284
+msgid "Well"
+msgstr "कुवाँ" 
+
+#: templates/home/captureVatikaPic.html:285
+msgid "Bore well"
+msgstr "बोर वेल"
+
+#: templates/home/captureVatikaPic.html:286
+msgid "Pond"
+msgstr "तालाब"
+
+#: templates/home/captureVatikaPic.html:287
+msgid "River"
+msgstr "नदी" 
+
+#: templates/home/captureVatikaPic.html:288
+msgid "Canel"
+msgstr "कैनल"
+
+#: templates/home/captureVatikaPic.html:289
+msgid "Nal coup (Sarkari Nal), grey /wastewate"
+msgstr "नल" 
+
+#: templates/home/captureVatikaPic.html:295
+msgid "Irrigation Water Availability"
+msgstr "सिंचाई जल उपलब्धता"
+
+#: templates/home/captureVatikaPic.html:296
+msgid "No water available for irrigation"
+msgstr "सिंचाई के लिए पानी उपलब्ध नहीं है"
+
+#: templates/home/captureVatikaPic.html:297
+msgid "Very less water available"
+msgstr "बहुत कम पानी उपलब्ध है"
+
+#: templates/home/captureVatikaPic.html:298
+msgid "Sufficient Water available for Nutri-Garden"
+msgstr "पोषण वाटिका के लिए पर्याप्त पानी उपलब्ध है"
+
+#: templates/home/captureVatikaPic.html:299
+msgid "Excess Water Availablity"
+msgstr "अतिरिक्त पानी की उपलब्धता"
+
+#: templates/home/captureVatikaPic.html:305
+msgid ""
+"Name the organizations / government schemes supporting the school Nutri-"
+"Garden"
+msgstr "स्कूल में पोषण वाटिका करने वाले संस्था/ सरकारी योजनाओं के नाम बताएं-"
+"बगीचा"
+
+#: templates/home/captureVatikaPic.html:306
+msgid "name the organization"
+msgstr "संस्था का नाम" 
+
+#: templates/home/captureVatikaPic.html:312
+msgid ""
+"Any weekly classes/course work dedicated to Nutri-Garden and training to "
+"students?"
+msgstr "पोषण वाटिका और प्रशिक्षण को समर्पित कोई भी साप्ताहिक कक्षा/पाठ्यक्रम कार्य"
+"छात्र?"
+
+#: templates/home/captureVatikaPic.html:313
+msgid "Any weekly classes"
+msgstr "कोई भी साप्ताहिक कक्षा"
+
+
+#: templates/home/captureVatikaPic.html:319
+msgid "Weekly time spent by students in Nutri-Garden"
+msgstr "पोषण वाटिका  छात्रों द्वारा बिताया गया साप्ताहिक समय"
+
+#: templates/home/captureVatikaPic.html:320
+msgid "Weekly 1 hr"
+msgstr "साप्ताहिक 1 घंटा" 
+
+#: templates/home/captureVatikaPic.html:321
+msgid "Weekly 2 hr"
+msgstr "साप्ताहिक 2 घंटे" 
+
+#: templates/home/captureVatikaPic.html:322
+msgid "Weekly 3 hr"
+msgstr "साप्ताहिक 3 घंटे" 
+
+#: templates/home/captureVatikaPic.html:323
+msgid "Weekly 4 hr"
+msgstr ""
+
+#: templates/home/captureVatikaPic.html:324
+msgid "Weekly 5 hr"
+msgstr "साप्ताहिक 5 घंटे" 
+
+#: templates/home/captureVatikaPic.html:325
+msgid "More than 5 hr"
+msgstr "5 घंटे से ज्यादा" 
+
+#: templates/home/captureVatikaPic.html:331
+msgid "At what scale School Nutri-Garden is operating:"
+msgstr "स्कूल में पोषण वाटिका किस स्तर पर संचालित हो रहा है : " 
+
+#: templates/home/captureVatikaPic.html:332
+msgid "Using output in school Mid-day-meal"
+msgstr "स्कूल मिड-डे-मील में उपज  उपयोग करना"
+
+#: templates/home/captureVatikaPic.html:333
+msgid "Selling the surplus produce from Nutri-Garden"
+msgstr "पोषण वाटिका से अतिरिक्त उपज बेचना"
+
+#: templates/home/captureVatikaPic.html:334
+msgid "Using Nutri-Garden as a open field science laboratory"
+msgstr "पोषण वाटिका को एक खुले क्षेत्र की विज्ञान प्रयोगशाला के रूप में उपयोग करना"
+
+#: templates/home/captureVatikaPic.html:335
+msgid "Using Nutri-Garden output in hot cooked meal of Anganwadi"
+msgstr "आंगनवाड़ी के ताजे पके हुए भोजन में पोषण वाटिका के उपज का उपयोग करना"
+
+#: templates/home/captureVatikaPic.html:336
+msgid ""
+"sharing the excess produce from Nutri-Garden to families of school children"
+msgstr " पोषण वाटिका से प्राप्त अतिरिक्त उपज को स्कूली बच्चों के परिवारों के साथ साझा करना"
+
+#: templates/home/captureVatikaPic.html:344
+msgid "Any Innovative practices in School Nutri-Garden"
+msgstr "स्कूल में पोषण वाटिका में कोई नवीन अभ्यास"
+
+#: templates/home/captureVatikaPic.html:351
+msgid "Category"
+msgstr "श्रेणी" 
+
+#: templates/home/captureVatikaPic.html:352
+msgid "AFIF"
+msgstr "एएफआईएफ" 
+
+#: templates/home/captureVatikaPic.html:353
+#, fuzzy
+#| msgid "PoshanVatika"
+msgid "Poshanvatika"
+msgstr "पोषण वाटिका"
+
+#: templates/home/captureVatikaPic.html:378
+msgid "Submit"
+msgstr "दर्ज करों" 
+
+#: templates/home/sarkari.html:88 templates/home/viewVatikas.html:74
+msgid "USER AUTHENTICATION"
+msgstr "उपभोक्ता प्रमाणीकरण"
+
+#: templates/home/sarkari.html:111 templates/home/viewVatikas.html:97
+#, fuzzy
+#| msgid "View All PoshanVatikas"
+msgid "View AFIF PoshanVatikas"
+msgstr "सभी पोषण वाटिका दिखाए"
+
+#: templates/home/sarkari.html:124 templates/home/viewVatikas.html:110
+msgid "Reports(coming soon..)"
+msgstr "रिपोर्ट्स (जल्द ही अपलोड करेंगे)"
+
+#: templates/home/sarkari.html:126 templates/home/viewVatikas.html:112
+msgid "Feedback(coming soon..)"
+msgstr "अभिप्राय(जल्द ही अपलोड करेंगे)"
+
+#~ msgid "Name:"
+#~ msgstr "लाभार्थी का नाम"
+
+#, fuzzy
+#~| msgid "View All PoshanVatikas"
+#~ msgid "View PoshanVaitka"
+#~ msgstr "सभी पोषण वाटिका दिखाए"
+
+#, fuzzy
+#~| msgid "Contact"
+#~ msgid "Contact details"
+#~ msgstr "संपर्क"
+
+#~ msgid "Current Language:"
+#~ msgstr "वर्तमान भाषा"
+
+#~ msgid "Available Languages:"
+#~ msgstr "उपलब्ध भाषाए"

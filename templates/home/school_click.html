@@ -1,0 +1,110 @@
+let mahaSchools = L.tileLayer.wms("https://geonode.communitygis.in/geoserver/wms", {
+    layers: "geonode:school16_17_codes_30april2020",
+    format: "image/png",
+    transparent: "true",
+    tiled: "true",
+    opacity: 0.7,
+    }
+);
+<!--  -->
+<script>
+    var schoolIcon = L.icon({
+          iconUrl: "{% static 'map/images/leaf-icon-forschool.png' %}",  // Replace with the path to your school icon
+          iconSize: [25, 25], // Adjust the size as needed
+          iconAnchor: [12, 12], // Point of the icon which will correspond to marker's location
+          popupAnchor: [0, -12] // Point from which the popup should open relative to the iconAnchor
+      });
+  
+      // Create a LayerGroup for schools
+      var schoolLayerGroup = L.layerGroup().addTo(mymap);
+  
+  // Add event listener for map clicks
+  mymap.on('click', function(e) {
+      var latlng = e.latlng;
+      console.log(`Map clicked at [${latlng.lat}, ${latlng.lng}]`);
+  
+      // Check if clicked on WMS layer
+      var url = 'https://geonode.communitygis.in/geoserver/wms';
+      var layerName = 'geonode:school16_17_codes_30april2020';
+  
+      var featureInfoUrl = `${url}?service=WMS&version=1.1.1&request=GetFeatureInfo&layers=${layerName}&bbox=${mymap.getBounds().toBBoxString()}&width=${mymap.getSize().x}&height=${mymap.getSize().y}&srs=EPSG:4326&query_layers=${layerName}&info_format=application/json&x=${Math.round(mymap.layerPointToContainerPoint(e.layerPoint).x)}&y=${Math.round(mymap.layerPointToContainerPoint(e.layerPoint).y)}`;
+  
+      // Fetch the feature info
+      fetch(featureInfoUrl)
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error('Network response was not ok ' + response.statusText);
+              }
+              return response.json();
+          })
+          .then(data => {
+              // console.log('Fetched GetFeatureInfo data:', data); // Debug: log fetched data
+  
+              if (data.features && data.features.length > 0) {
+                  var feature = data.features[0];
+                  var properties = feature.properties;
+  
+                  var schoolPopupContent = `
+                      <table class="w3-table" style="font-size:12px; align:center;">
+                          <tbody>
+                              <tr>
+                                  <td><strong>Name:</strong></td>
+                                  <td>${properties.school_nam || 'N/A'}</td>
+                              </tr>
+                              <tr>
+                                  <td><strong>Village Name:</strong></td>
+                                  <td>${properties.village_na || 'N/A'}</td>
+                              </tr>
+                              <tr>
+                                  <td><strong>District:</strong></td>
+                                  <td>${properties.distname || 'N/A'}</td>
+                              </tr>
+                              
+                              <tr>
+                                  <td><strong>School Code:</strong></td>
+                                  <td>${properties.school_cod || 'N/A'}</td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  `;
+  
+                  var schoolMarker = L.marker(latlng, { icon: schoolIcon })
+                      .bindPopup(schoolPopupContent, { maxWidth: 200 })
+                      .addTo(schoolLayerGroup);
+  
+                  // Open the popup on marker click
+                  schoolMarker.on('click', function() {
+                      this.openPopup();
+                  });
+              } else {
+                  console.log('No school data at clicked location.');
+              }
+          })
+          .catch(error => {
+              console.error('Error fetching WMS GetFeatureInfo data:', error);
+          });
+  });
+      
+  //hover end
+    </script>
+  
+  <!-- For view.py to show selling surplus and self consumpotion poshanvatika
+   def viewVatikas(request):
+    wells = UploadWellPictureModel.objects.all()
+    view_name = 'viewVatikas'
+    vatikas = UploadPictureModel.objects.all()
+    vatikascount = UploadPictureModel.objects.count()
+    vatikas1 = PoshanFormInformation.objects.all()
+    onlinevatikascount = PoshanFormInformation.objects.count()
+    vatikas3 = KoboPoshan.objects.all()
+    kobovatiakscount = KoboPoshan.objects.count()
+    vatikas2 = UploadPictureModel.objects.filter(type='AFIF')
+    selfcons = PoshanFormInformation.objects.filter(level_nutri_garden='for_self_consumption',nutri_garden_scale ='Only for vegetables and fruits, Backyard Poultry')
+    selfconscount =selfcons.count()
+    sellsurp = PoshanFormInformation.objects.filter(level_nutri_garden='selling_surplus')
+    sellsurpcount = sellsurp.count()
+    context = {'vatikas1': vatikas1,'vatikas2': vatikas2, 'vatikas':vatikas,'selfcons':selfcons,'sellsurp':sellsurp,'vatikas3':vatikas3,'vatikascount':vatikascount,'onlinevatikascount':onlinevatikascount,'kobovatiakscount':kobovatiakscount,'selfconscount':selfconscount,'sellsurpcount':sellsurpcount,'view_name': view_name,'is_view_Vatikas': view_name == 'viewVatikas' }
+    # context = {'wells': wells, 'mylist':mylist}
+    return render(request, 'home/viewVatikas.html', context )
+    # return render(request, 'map/map.html', context)
+ -->

@@ -91,7 +91,50 @@
   #legend div {
       margin-bottom: 5px;
   }
+  /* Green circular icon for all PoshanVatikas */
+  .vatika-marker-shell {
+      background: transparent !important;
+      border: none !important;
+  }
 
+  .vatika-green-dot {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 16px;
+      height: 16px;
+      background-color: #28a745;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+
+      transform: translate(-50%, -50%) scale(var(--vatika-scale, 1));
+      transform-origin: center;
+  }
+
+  /* Smaller base size on mobile */
+  @media screen and (max-width: 600px) {
+      .vatika-green-dot {
+          width: 12px;
+          height: 12px;
+      }
+  }
+  .afif-legend {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.afif-green-dot {
+    display: inline-block;
+    flex: 0 0 12px;
+    width: 12px;
+    height: 12px;
+    background: #28a745;
+    border: 1px solid #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
 </style>
 
 <!-- <script src="https://unpkg.com/leaflet-pancontrol"></script> -->
@@ -143,15 +186,15 @@
       <li><a class="subheader">{% trans "DATA CONTRIBUTION AND FORMS" %}</a></li>
       <li><a href="https://ee.kobotoolbox.org/x/fcnSnW0u" class="custom-link">{% trans "Offline PoshanVaitka Form" %}</a></li>
       <li><a href="{% url 'capture_poshanvatika' %}" class="custom-link">{% trans "Online PoshanVatika Form" %}</a></li>
-      <li><a href="{% url 'captwellpic'%}" class="custom-link">{% trans "Capture Wells" %}</a></li>
-      <li><a href="{% url 'captseedpic'%}" class="custom-link">{% trans "Capture Seed" %}</a></li>
-      <li><a href="{% url 'viewVatikas'%}" class="custom-link">{% trans "View All PoshanVatikas" %}</a></li>
+      <!-- <li><a href="{% url 'captwellpic'%}" class="custom-link">{% trans "Capture Wells" %}</a></li> -->
+      <!-- <li><a href="{% url 'captseedpic'%}" class="custom-link">{% trans "Capture Seed" %}</a></li> -->
+      <!-- <li><a href="{% url 'viewVatikas'%}" class="custom-link">{% trans "View All PoshanVatikas" %}</a></li> -->
       {% if user.is_authenticated and user|has_group:"MWCD officials" %}
       <li><a href="{% url 'viewSarkariVatikas'%}" class="custom-link" id="view-sarkari-vatikas">{% trans "View MWCD PoshanVatikas" %}</a></li>
       {% endif %}
-      <li><a href="{% url 'viewAFIFVatikas'%}" class="custom-link">{% trans "View AFIF PoshanVatikas" %}</a></li>
-      <li><a href="{% url 'well_info'%}" class="custom-link">{% trans "View Wells Data" %}</a></li>
-      <li><a href="{% url 'viewWells'%}" class="custom-link">{% trans "View Wells" %}</a></li>
+      <!-- <li><a href="{% url 'viewAFIFVatikas'%}" class="custom-link">{% trans "View AFIF PoshanVatikas" %}</a></li> -->
+      <!-- <li><a href="{% url 'well_info'%}" class="custom-link">{% trans "View Wells Data" %}</a></li> -->
+      <!-- <li><a href="{% url 'viewWells'%}" class="custom-link">{% trans "View Wells" %}</a></li> -->
       {% if user.is_authenticated %}
       <li><a href="{% url 'archive' %}" class="custom-link"><b>{% trans "Archived PoshanVatikas" %}</b></a></li>
       {% endif %}
@@ -186,9 +229,9 @@ Show Statistics
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     <!-- Tab navigation -->
     <ul class="nav nav-tabs" id="myTab" role="tablist">
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link" id="poshna-tab" data-toggle="tab" href="#poshna" role="tab" aria-controls="poshna" aria-selected="true">All PoshnaVatikas</a>
-      </li>
+      </li> -->
       <li class="nav-item">
         <a class="nav-link active" id="afif-tab" data-toggle="tab" href="#afif" role="tab" aria-controls="afif" aria-selected="false">AFIF</a>
       </li>
@@ -197,9 +240,14 @@ Show Statistics
     <div class="tab-content" id="myTabContent">
       <!-- AFIF tab -->
       <div class="tab-pane fade show active" id="afif" role="tabpanel" aria-labelledby="afif-tab">
-        <img src="../static/map/images/logo_3.png" width="30px" height="30px"/> AFIF Total Vatikas : {{ vatikascount }}<br>
+        <div class="afif-legend">
+          <span class="afif-green-dot"></span>
+          <span>AFIF Total Vatikas : {{ vatikascount }}</span>
+      </div>
         <ul>
-          {% for entry in AFIF_yearly_counts %}
+          <!-- <li>Total Kobo PoshanVatikas: {{ kobo2vatiakscount }}</li> -->
+          {% for entry in kobo2vatiakscount %}
+          
             <li>Year: {{ entry.year }}, AFIF added: {{ entry.count }}</li>
           {% endfor %}
         </ul>
@@ -211,7 +259,7 @@ Show Statistics
           <img src="../static/map/images/pw_logo.png" width="30px" height="30px"/> PoshnaVatikas Selling Surplus: {{ sellsurpcount }}<br>
           <img src="../static/map/images/pw_logo.png" width="30px" height="30px"/> Self Consuming PoshanVatikas: {{ selfconscount }}<br>
           <hr>
-          <img src="../static/map/images/leaves-icon-13.png" width="30px" height="30px"/> PoshanVatikas added Offline: {{ kobovatiakscount }}<br>
+          <img src="../static/map/images/leaves-icon-13.png" width="30px" height="30px"/> PoshanVatikas added Offline: {{ kobo2vatiakscount }}<br>
           <hr>
         {% endif %}
       </div>
@@ -247,6 +295,35 @@ Show Statistics
 
     let isClicked = false
     var mymap = L.map('mapid').setView([19.7515+1,75.7139+2], 4.5);
+    // One common green circle icon for all PoshanVatikas
+    var vatikaIcon = L.divIcon({
+        className: 'vatika-marker-shell',
+        html: '<span class="vatika-green-dot"></span>',
+        iconSize: [24, 24],
+        iconAnchor: [12, 12],
+        popupAnchor: [0, -12]
+    });
+
+    // Resize Vatika circles according to map zoom
+    function updateVatikaMarkerScale() {
+        var zoom = mymap.getZoom();
+
+        // Zoom level 8 is the reference size
+        var scale = Math.pow(1.22, zoom - 8);
+
+        // Prevent circles from becoming too small or too large
+        scale = Math.max(0.65, Math.min(1.8, scale));
+
+        mymap.getContainer().style.setProperty(
+            '--vatika-scale',
+            scale.toFixed(2)
+        );
+    }
+
+    // Update continuously during zooming
+    mymap.on('zoom', updateVatikaMarkerScale);
+    updateVatikaMarkerScale();
+
     // Create a sidebar control
 
    
@@ -327,7 +404,7 @@ document.getElementById('view-sarkari-vatikas').addEventListener('click', functi
     } else {
         mymap.addLayer(mahaSchools);
 
-        mymap.removeLayer(poshanlayerGroup);
+        // mymap.removeLayer(poshanlayerGroup);
         mymap.removeLayer(poshanlayerGroup2);
         mymap.removeLayer(poshanlayerGroup3);
         var maharashtraLatLng = [19.7515, 75.7139];
@@ -394,100 +471,8 @@ document.getElementById('view-sarkari-vatikas').addEventListener('click', functi
             popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
         });
 
-      var poshanlayerGroup = L.layerGroup().addTo(mymap);
+      // var poshanlayerGroup = L.layerGroup().addTo(mymap);
 </script>
-
-{% for i in vatikas %}
-
-   <script>
-      //  alert("in vatikas -" +i+"- "+ +i.nutri_nm) 
-
-    var table1 = 
-         
-         `<table class="w3-table" id="popup" style="font-size:12px; align:center;" >
-           <tbody>
-         {% if i.picture %}
-           <tr>
-             <tr><img src={{ i.picture.url }} alt="No image uploaded" style="height:100px; width:170px; border:2px solid #555;"/>
-           </tr>
-           {% endif %}
- 
-           {% if i.organization %}
-           <tr>
-               <th>Organization name</th>
-               <th>{{ i.organization}}</th>
-           </tr>
-           {% endif %}
-           
-           {% if i.district %}
-           <tr>
-             <td>District</td>
-             <td>{{ i.district}}</td>
-           </tr>
-           {% endif %}
- 
-           {% if i.village %}
-           <tr>
-             <td>Village</td>
-             <td>{{ i.village }}</td>
-           </tr>
-           {% endif %}
-           {% if i.name %}
-           <tr>
-             <td>Beneficiary Name</td>
-             <td>{{ i.name }}</td>
-           </tr>
-           {% endif %}
-           {% if i.one_to_fourthousand_sq %}
-           <tr>
-             <td>Area of Nutrigarden</td>
-             <td>{{ i.one_to_fourthousand_sq }}</td>
-           </tr>
-           {% endif %}
-           <tr>
-          
-           {% if i.picture %}
-            <td><a href="{{ i.picture.url }}" class = "popupimage2" target = "_app"><img src="../static/map/images/icons8-image-48.png"/></a></td>
-           {% else %}
-            <td><img src="../static/map/images/icons8-image-48.png"/></td>
-           {% endif %}  
-          
-            <td><a href="../download/{{ i.id }}"><img src="../static/map/images/icons8-microsoft-excel-48.png" /></a></td>
-             
-          
-          
-          </tr>  
-         </tbody>
-    </table>
-    </br>`
-       var popupOptions =
-        {
-          'maxWidth': '500',
-          'className' : 'another-popup' // classname for another popup
-        }
-        var marker = L.marker(["{{ i.lat }}", "{{ i.lng }}"], {icon:pvIcon}).addTo(mymap).bindPopup(table1, popupOptions);
-        poshanlayerGroup.addLayer(marker);
-        // Added  hover to open popups
-        // marker.on('mouseover', function (e) {
-        //       this.openPopup(e.latlng);
-        //   });
-        // marker.on('mouseout', function (e) {
-        //       this.openPopup(e.latlng);
-        // });
-        marker.on('click', function (e) {
-              this.openPopup(e.latlng);
-        });
-
-        mymap.on ({
-            click: function() {
-                isClicked = false
-            },
-            popupclose: function () {
-                isClicked = false
-            }
-        })
-    </script>
-{% endfor %}
 
 
 <script>
@@ -504,86 +489,6 @@ document.getElementById('view-sarkari-vatikas').addEventListener('click', functi
   var poshanlayerGroup3 = L.layerGroup().addTo(mymap);
 </script>
 
-{% for i in vatikas2 %}
- 
-   <script>
-      //  alert("in vatikas -" +i+"- "+ +i.nutri_nm) 
-
-    var table3 = 
-         
-         `<table class="w3-table" id="popup" style="font-size:12px; align:center;" >
-           <tbody>
-         {% if i.picture %}
-           <tr>
-             <tr><img src={{ i.picture.url }} alt="No image uploaded" style="height:100px; width:170px; border:2px solid #555;"/>
-           </tr>
-           {% endif %}
-           {% if i.name %}
-           <tr>
-             <td>Beneficiary Name</td>
-             <td>{{ i.name }}</td>
-           </tr>
-           {% endif %}
-           {% if i.organization %}
-           <tr>
-               <th>Organization name</th>
-               <th>{{ i.organization}}</th>
-           </tr>
-           {% endif %}
-           
-           {% if i.district %}
-           <tr>
-             <td>District</td>
-             <td>{{ i.district}}</td>
-           </tr>
-           {% endif %}
- 
-           {% if i.village %}
-           <tr>
-             <td>Village</td>
-             <td>{{ i.village }}</td>
-           </tr>
-           {% endif %}
-           <tr>
-          
-           {% if i.picture %}
-            <td><a href="{{ i.picture.url }}" class = "popupimage2" target="_blank"><img src="../static/map/images/icons8-image-48.png"/></a></td>
-           {% else %}
-            <td><img src="../static/map/images/icons8-image-48.png"/></td>
-           {% endif %}  
-          
-            <td><a href="../download/{{ i.id }}"><img src="../static/map/images/icons8-microsoft-excel-48.png" /></a></td>
-         </tbody>
-    </table>
-    </br>`
-       var popupOptions =
-        {
-          'maxWidth': '500',
-          'className' : 'another-popup' // classname for another popup
-        }
-        var marker = L.marker(["{{ i.lat }}", "{{ i.lng }}"], {icon:logo}).addTo(mymap).bindPopup(table3, popupOptions);
-        poshanlayerGroup3.addLayer(marker);
-        // Added  hover to open popups
-        // marker.on('mouseover', function (e) {
-        //       this.openPopup(e.latlng);
-        //   });
-        // marker.on('mouseout', function (e) {
-        //       this.openPopup(e.latlng);
-        // });
-        marker.on('click', function (e) {
-              this.openPopup(e.latlng);
-        });
-
-        mymap.on ({
-            click: function() {
-                isClicked = false
-            },
-            popupclose: function () {
-                isClicked = false
-            }
-        })
-    </script>
-{% endfor %}
 
 <script>
   //poshan - myposhanvatikas
@@ -850,7 +755,7 @@ var table =
       'maxWidth': '500',
       'className' : 'another-popup' // classname for another popup
     }
-       var marker = L.marker(["{{ i.lat }}", "{{ i.lng }}"], {icon:icon2c}).bindPopup(table, popupOptions);
+       var marker = L.marker(["{{ i.lat }}", "{{ i.lng }}"], {icon:vatikaIcon}).bindPopup(table, popupOptions);
        selfconvatikaslayerGroup.addLayer(marker);
 </script>
 {% endfor %}
@@ -924,7 +829,7 @@ var table =
       'maxWidth': '500',
       'className' : 'another-popup' // classname for another popup
     }
-       var marker = L.marker(["{{ i.lat }}", "{{ i.lng }}"], {icon:pvIcon}).bindPopup(table, popupOptions);
+       var marker = L.marker(["{{ i.lat }}", "{{ i.lng }}"], {icon:vatikaIcon}).bindPopup(table, popupOptions);
        sellsurpluslayerGroup.addLayer(marker);
    </script>
 {% endfor %}
@@ -1067,7 +972,7 @@ var table =
     'maxWidth': '500',
     'className' : 'another-popup' // classname for another popup
   }
-  var marker = L.marker([lat,lng], {icon:iconvar}).addTo(mymap).bindPopup(table4, popupOptions);
+  var marker = L.marker([lat,lng], {icon:vatikaIcon}).addTo(mymap).bindPopup(table4, popupOptions);
   // var marker = L.marker(["{{ i.lat }}", "{{ i.lng }}"], {icon:iconvar}).addTo(mymap);
   poshanlayerGroup2.addLayer(marker);
   
@@ -1268,7 +1173,7 @@ var table =
  
        var marker = L.marker(
            [lat, lng],
-           {icon: iconvar}
+           {icon: vatikaIcon}
        )
        .addTo(mymap)
        .bindPopup(table4a, popupOptions);
@@ -1383,7 +1288,7 @@ mymap.on('click', function(e) {
         "Districts":indiaDistrict,
         "Maharashtra Highways":mahaHighways,
         "Maharashtra Schools":mahaSchools,
-        "PoshanVatikas": poshanlayerGroup,
+        // "PoshanVatikas": poshanlayerGroup,
         "AFIF": poshanlayerGroup3,
         "Poshanvatikas(Kobo form)":poshanlayerGroup2,
         // "Self Consumption Vatiaks":selfconvatikaslayerGroup,
