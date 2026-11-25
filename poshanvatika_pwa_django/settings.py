@@ -28,26 +28,26 @@ DEBUG = True
 
 # ALLOWED_HOSTS = ['poshanvatika.communitygis.net','127.0.0.1','localhost','myposhanvatika.in','www.myposhanvatika.in']
 
-ALLOWED_HOSTS = ['myposhanvatika.in','www.myposhanvatika.in']
-# ALLOWED_HOSTS = ['poshanvatika.communitygis.net','127.0.0.1','localhost','myposhanvatika.in','www.myposhanvatika.in','157.90.173.126']
+# ALLOWED_HOSTS = ['myposhanvatika.in','www.myposhanvatika.in']
+ALLOWED_HOSTS = ['poshanvatika.communitygis.net','127.0.0.1','localhost','myposhanvatika.in','www.myposhanvatika.in','157.90.173.126']
 # Application definition
 
-WAGTAIL_APPS = [
-    'wagtail.contrib.forms',
-    'wagtail.contrib.redirects',
-    'wagtail.embeds',
-    'wagtail.sites',
-    'wagtail.users',
-    'wagtail.snippets',
-    'wagtail.documents',
-    'wagtail.images',
-    'wagtail.search',
-    'wagtail.admin',
-    'wagtail.core',
-    'modelcluster',
-    'taggit',
-    'resources',
-]
+# WAGTAIL_APPS = [
+#     'wagtail.contrib.forms',
+#     'wagtail.contrib.redirects',
+#     'wagtail.embeds',
+#     'wagtail.sites',
+#     'wagtail.users',
+#     'wagtail.snippets',
+#     'wagtail.documents',
+#     'wagtail.images',
+#     'wagtail.search',
+#     'wagtail.admin',
+#     # 'wagtail.core',
+#     'modelcluster',
+#     'taggit',
+#     'resources',
+# ]
 
 BOOTSTRAP4 = {
     'include_jquery': True,
@@ -70,14 +70,16 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-] + WAGTAIL_APPS
+] 
+# + WAGTAIL_APPS
 
 SITE_ID = 3
 
-WAGTAIL_MIDDLEWARE = [
-    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
-]
+# WAGTAIL_MIDDLEWARE = [
+#     'wagtail.contrib.redirects.middleware.RedirectMiddleware',
+# ]
 MIDDLEWARE = [
+    # 'allauth.account.middleware.AccountMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -86,7 +88,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-] + WAGTAIL_MIDDLEWARE
+] 
+# + WAGTAIL_MIDDLEWARE
 
 ROOT_URLCONF = 'poshanvatika_pwa_django.urls'
 
