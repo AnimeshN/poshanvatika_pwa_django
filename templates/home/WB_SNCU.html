@@ -4,19 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maharashtra State SNCU GIS MAP</title>
-    <link rel="stylesheet" href="{% static 'static1/leaflet.css' %}" />
+
+    <title>West Bengal SNCU GIS Map</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="{% static 'static1/leaflet.css' %}">
+
     <style>
-        body, html {
+        html,
+        body {
             margin: 0;
             padding: 0;
             height: 100%;
+            width: 100%;
             font-family: Arial, sans-serif;
         }
-        
-        #map { height: calc(100vh - 50px); }
 
         .header {
+            min-height: 30px;
             background-color: #004d40;
             color: white;
             text-align: center;
@@ -24,226 +29,830 @@
             font-size: 20px;
             font-weight: bold;
             letter-spacing: 1px;
-            box-shadow: 0px 4px 2px -2px gray;
-        }
-        .death-label {
-            padding: 2px;
-            font-size: 12px;
-            color: red; /* Text color for tooltips */
+            box-shadow: 0 4px 2px -2px gray;
         }
 
-        .legend {
-            background: white;
-            border: 2px solid #000;
-            border-radius: 5px;
-            padding: 8px;
-            font-size: 12px;
-            line-height: 16px;
-            position: absolute;
-            bottom: 60px;
-            right: 10px;
-            z-index: 1000;
-            width: 300px; /* Increased width */
-           
-        }
-
-        .legend i {
-            width: 14px;
-            height: 14px;
-            display: inline-block;
-            margin-right: 5px;
-            border: 2px solid #000;
-            border-radius: 50%;
-            background-color: transparent;
-        }
-
-        table {
+        #map {
+            height: calc(100vh - 50px);
             width: 100%;
+        }
+
+        .sncu-popup {
+            min-width: 220px;
+            max-width: 350px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: Arial, sans-serif;
+        }
+
+        .sncu-popup h3 {
+            background: #004d40;
+            color: white;
+            padding: 8px;
+            margin: 0 0 8px 0;
+            font-size: 15px;
+        }
+
+        .sncu-popup table {
             border-collapse: collapse;
+            width: 100%;
             font-size: 12px;
         }
 
-        th, td {
-            padding: 2px 5px;
+        .sncu-popup th,
+        .sncu-popup td {
+            border: 1px solid #ddd;
+            padding: 5px;
             text-align: left;
+            overflow-wrap: anywhere;
         }
 
-        th {
-            font-weight: bold;
+        .sncu-popup th {
+            background: #f2f2f2;
+            width: 42%;
+        }
+
+        .map-status {
+            position: absolute;
+            z-index: 1000;
+            top: 65px;
+            right: 10px;
+            max-width: 240px;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            box-shadow: 0 1px 5px #777;
+            font-size: 12px;
         }
 
         @media (max-width: 600px) {
             .header {
-                font-size: 18px;
-                padding: 8px;
+                height: auto;
+                padding: 10px 5px;
+                font-size: 16px;
             }
 
-            .legend {
-                font-size: 10px;
-                padding: 6px;
-                line-height: 14px;
-                bottom: 40px;
+            #map {
+                height: calc(100vh - 45px);
             }
 
-            .legend i {
-                width: 12px;
-                height: 12px;
-            }
-
-            table {
-                font-size: 10px;
+            .map-status {
+                top: 75px;
+                max-width: 180px;
             }
         }
     </style>
 </head>
-</head>
+
 <body>
+
     <div class="header">
         West Bengal SNCU GIS MAP
     </div>
-   
+
     <div id="map"></div>
-    <script src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'></script>
+
+    <div id="mapStatus" class="map-status">
+        Loading map layers...
+    </div>
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
     <script>
-        // Initialize the map
-        // var map = L.map('map').setView([23.2726, 87.6639], 9);
-        var map = L.map('map');
+    // =========================================================
+    // 1. CONFIGURATION
+    // =========================================================
 
-        function setMapView() {
-            var zoomLevel = window.innerWidth <= 600 ? 7 : 9; // Decrease zoom for mobile
-            map.setView([23.2726, 87.6639], zoomLevel);
+    const GEOSERVER =
+        'https://geonode.communitygis.in/geoserver';
+
+    // Keep the workspace-specific WMS endpoint.
+    const WMS_URL =
+        GEOSERVER + '/geonode/wms';
+
+    // Use the standard GeoServer WFS endpoint.
+    const WFS_URL =
+        GEOSERVER + '/ows';
+
+    const STATE_LAYER_NAME = 'wb_state';
+    const STATE_STYLE_NAME = 'wb_state';
+
+    const SNCU_LAYER_NAME = 'wb_pincode_withsncu_v1';
+    const SNCU_STYLE_NAME = 'wb_pincode_withsncu_v1';
+
+    const statusElement = document.getElementById('mapStatus');
+
+    function setStatus(message) {
+        statusElement.textContent = message;
+    }
+
+
+    // =========================================================
+    // 2. INITIALIZE MAP
+    // =========================================================
+
+    const map = L.map('map');
+
+    function setMapView() {
+        const zoomLevel =
+            window.innerWidth <= 600 ? 7 : 9;
+
+        map.setView([23.2726, 87.6639], zoomLevel);
+    }
+
+    setMapView();
+
+
+    // =========================================================
+    // 3. GOOGLE HYBRID BASEMAP
+    // =========================================================
+
+    const satelliteLayer = L.tileLayer(
+        'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+        {
+            maxZoom: 19,
+            attribution: '&copy; Google'
+        }
+    ).addTo(map);
+
+
+    // =========================================================
+    // 4. WMS STATE BOUNDARY
+    // =========================================================
+
+    const wmsState = L.tileLayer.wms(WMS_URL, {
+        layers: STATE_LAYER_NAME,
+        styles: STATE_STYLE_NAME,
+        format: 'image/png',
+        transparent: true,
+        version: '1.1.1',
+        opacity: 1
+    }).addTo(map);
+
+
+    // =========================================================
+    // 5. WMS SNCU PINCODE BOUNDARIES
+    // =========================================================
+
+    const wmsSNCU = L.tileLayer.wms(WMS_URL, {
+        layers: SNCU_LAYER_NAME,
+        styles: SNCU_STYLE_NAME,
+        format: 'image/png',
+        transparent: true,
+        version: '1.1.1',
+        opacity: 1
+    }).addTo(map);
+
+
+    // =========================================================
+    // 6. LAYER CONTROLS
+    // =========================================================
+
+    L.control.layers(
+        {
+            'Google Hybrid Satellite': satelliteLayer
+        },
+        {
+            'West Bengal State Boundary': wmsState,
+            'SNCU Pincode Boundaries': wmsSNCU
+        },
+        {
+            collapsed: window.innerWidth <= 600
+        }
+    ).addTo(map);
+
+
+    // =========================================================
+    // 7. WFS CONFIGURATION
+    // =========================================================
+
+    let sncuFeatureType = null;
+    let hoverRequestController = null;
+    let hoverTimer = null;
+    let lastHoverKey = '';
+    let activeHighlight = null;
+
+    // The hover query uses a small geographic bounding box.
+    // The returned polygons are then checked against the exact
+    // mouse position before showing a popup.
+    const HOVER_RADIUS = 0.015;
+
+    const highlightStyle = {
+        color: '#ff3300',
+        weight: 3,
+        opacity: 1,
+        fillColor: '#ffff00',
+        fillOpacity: 0.20
+    };
+
+
+    // =========================================================
+    // 8. HTML ESCAPING
+    // =========================================================
+
+    function escapeHtml(value) {
+        return String(value ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+
+    // =========================================================
+    // 9. WFS GETCAPABILITIES
+    //    DISCOVER THE REAL PUBLISHED FEATURE TYPE
+    // =========================================================
+
+    async function discoverSNCUFeatureType() {
+        const params = new URLSearchParams({
+            service: 'WFS',
+            version: '2.0.0',
+            request: 'GetCapabilities'
+        });
+
+        const response = await fetch(
+            WFS_URL + '?' + params.toString()
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                'WFS GetCapabilities HTTP error: ' +
+                response.status
+            );
         }
 
-        // Initialize the map
-        setMapView();
+        const xmlText = await response.text();
 
-        // Add a base layer
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19
-        }).addTo(map);
-
-        // Define WMS layers
-        var wmsState = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/wms', {
-            layers: 'geonode:WB_state',
-            format: 'image/png',
-            transparent: true
-        }).addTo(map);
-
-        var wmsSNCU = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/wms', {
-            layers: 'geonode:WB_pincode_withSNCU_v1',
-            format: 'image/png',
-            transparent: true
-        }).addTo(map);
-
-        var wmsDeath = L.tileLayer.wms('https://geonode.communitygis.in/geoserver/wms', {
-            layers: 'geonode:WB_centroid_percentDeath_V1',
-            format: 'image/png',
-            transparent: true
-        }).addTo(map);
-
-        // Function to get color based on death percentage
-        function getColor(d) {
-            return d > 10.0 ? '#FF0000' :
-                   d > 4.7 ? '#FFFF00' :
-                   d > 0 ? '#00FF00' :
-                            'transparent';
+        if (
+            xmlText.trim().startsWith('<!DOCTYPE html') ||
+            xmlText.trim().startsWith('<html')
+        ) {
+            throw new Error(
+                'WFS returned HTML instead of XML. Check the WFS endpoint.'
+            );
         }
 
-        // Fetch and handle point data for SNCU centroids
-        fetch('https://geonode.communitygis.in/geoserver/wfs?service=WFS&version=1.0.0&request=GetFeature&typeName=geonode:WB_centroid_percentDeath_V1&outputFormat=application/json')
-            .then(response => response.json())
-            .then(data => {
-                var categoryCounts = {
-                    'green': 0,
-                    'yellow': 0,
-                    'red': 0
+        const xml = new DOMParser().parseFromString(
+            xmlText,
+            'application/xml'
+        );
+
+        if (xml.querySelector('parsererror')) {
+            throw new Error(
+                'Unable to parse WFS GetCapabilities XML.'
+            );
+        }
+
+        const exception = xml.querySelector(
+            'Exception, ServiceException'
+        );
+
+        if (exception) {
+            throw new Error(
+                exception.textContent || 'GeoServer WFS error'
+            );
+        }
+
+        const featureElements = Array.from(
+            xml.getElementsByTagNameNS('*', 'FeatureType')
+        );
+
+        const featureTypes = featureElements
+            .map(function (element) {
+                const nameElement =
+                    element.getElementsByTagNameNS('*', 'Name')[0];
+
+                const titleElement =
+                    element.getElementsByTagNameNS('*', 'Title')[0];
+
+                return {
+                    name: nameElement
+                        ? nameElement.textContent.trim()
+                        : '',
+                    title: titleElement
+                        ? titleElement.textContent.trim()
+                        : ''
                 };
+            })
+            .filter(function (feature) {
+                return feature.name.length > 0;
+            });
 
-                L.geoJson(data, {
-                    pointToLayer: function (feature, latlng) {
-                        var deathPer = feature.properties.death_per_;
-                        
-                        // Filter out 0% and NaN values
-                        if (deathPer === 0 || isNaN(deathPer) || deathPer === null) return null;
+        console.log('Published WFS feature types:', featureTypes);
 
-                        var marker = L.circleMarker(latlng, {
-                            radius: 8,
-                            fillColor: getColor(deathPer),
-                            color: "#000",
-                            weight: 2,
-                            opacity: 1,
-                            fillOpacity: 0.8
-                        }).addTo(map);
+        // First, look for an exact match ignoring case.
+        let match = featureTypes.find(function (feature) {
+            return feature.name.toLowerCase() ===
+                SNCU_LAYER_NAME.toLowerCase();
+        });
 
-                        // Bind tooltip with death percentage
-                        marker.bindTooltip(deathPer.toString() + '%', {
-                            permanent: false,
-                            direction: 'right',
-                            className: 'death-label',
-                            opacity: 0.8
-                            
-                        });
+        // If the published feature type has a namespace prefix,
+        // compare the part after the colon as well.
+        if (!match) {
+            match = featureTypes.find(function (feature) {
+                const localName = feature.name
+                    .split(':')
+                    .pop()
+                    .toLowerCase();
 
-                        // Increment category counts
-                        if (deathPer > 10.0) {
-                            categoryCounts['red']++;
-                        } else if (deathPer > 4.7) {
-                            categoryCounts['yellow']++;
-                        } else if (deathPer > 0) {
-                            categoryCounts['green']++;
-                        }
+                return localName ===
+                    SNCU_LAYER_NAME.toLowerCase();
+            });
+        }
 
-                        // Bind click event for popup
-                        marker.on('click', function(e) {
-                            var popupContent = `
-                                <div style="color: red;">
-                                    <b>Death Percentage:</b> ${deathPer.toString()}<br>
-                                    <b>SNCU Name:</b> ${feature.properties.sncu_name_ || 'Unknown'}<br>
-                                    <b>Pincode:</b> ${feature.properties.pincode || 'Unknown'}
-                                </div>
-                            `;
-                            L.popup()
-                                .setLatLng(e.latlng)
-                                .setContent(popupContent)
-                                .openOn(map);
-                        });
+        // Finally, find a likely SNCU/pincode layer by name or title.
+        if (!match) {
+            match = featureTypes.find(function (feature) {
+                const text = (
+                    feature.name + ' ' + feature.title
+                ).toLowerCase();
 
-                        return marker;
-                    }
+                return text.includes('pincode') &&
+                    text.includes('sncu');
+            });
+        }
+
+        if (!match) {
+            console.error(
+                'Available WFS feature types:',
+                featureTypes
+            );
+
+            throw new Error(
+                'Could not find the SNCU pincode feature type. ' +
+                'See the browser console for published feature names.'
+            );
+        }
+
+        sncuFeatureType = match.name;
+
+        console.log(
+            'Selected SNCU WFS feature type:',
+            sncuFeatureType
+        );
+
+        setStatus(
+            'Map ready. Hover over an SNCU pincode boundary to view attributes.'
+        );
+    }
+
+    // =========================================================
+// WEST BENGAL BOUNDARY — GEOJSON OUTLINE ONLY
+// =========================================================
+
+let stateOutlineLayer = null;
+
+async function loadWestBengalOutline() {
+    const params = new URLSearchParams({
+        service: 'WFS',
+        version: '2.0.0',
+        request: 'GetFeature',
+        typeNames: STATE_LAYER_NAME,
+        outputFormat: 'application/json',
+        srsName: 'EPSG:4326'
+    });
+
+    const response = await fetch(
+        WFS_URL + '?' + params.toString()
+    );
+
+    if (!response.ok) {
+        throw new Error(
+            'State boundary WFS request failed: ' +
+            response.status
+        );
+    }
+
+    const text = await response.text();
+
+    if (text.trim().startsWith('<')) {
+        console.error('State boundary response:', text);
+        throw new Error(
+            'GeoServer returned XML instead of GeoJSON. ' +
+            'Check the state WFS feature type.'
+        );
+    }
+
+    const geojson = JSON.parse(text);
+
+    if (!geojson.features || geojson.features.length === 0) {
+        throw new Error('No state boundary features returned.');
+    }
+
+    // Remove the filled WMS state layer so it cannot obscure
+    // the satellite basemap.
+    if (map.hasLayer(wmsState)) {
+        map.removeLayer(wmsState);
+    }
+
+    // Draw boundary only: no fill.
+    if (stateOutlineLayer) {
+        map.removeLayer(stateOutlineLayer);
+    }
+
+    stateOutlineLayer = L.geoJSON(geojson, {
+        interactive: false,
+
+        style: {
+            color: '#00FFFF',
+            weight: 3,
+            opacity: 1,
+            fill: false,
+            fillOpacity: 0
+        }
+    }).addTo(map);
+
+    console.log('West Bengal outline loaded successfully.');
+}
+    // =========================================================
+    // 10. POINT-IN-POLYGON TEST
+    //     CHECK THAT THE POINTER IS INSIDE A FEATURE
+    // =========================================================
+
+    function pointOnSegment(point, a, b) {
+        const x = point[0];
+        const y = point[1];
+
+        const x1 = a[0];
+        const y1 = a[1];
+
+        const x2 = b[0];
+        const y2 = b[1];
+
+        const cross =
+            (x - x1) * (y2 - y1) -
+            (y - y1) * (x2 - x1);
+
+        if (Math.abs(cross) > 1e-10) {
+            return false;
+        }
+
+        return (
+            x >= Math.min(x1, x2) - 1e-10 &&
+            x <= Math.max(x1, x2) + 1e-10 &&
+            y >= Math.min(y1, y2) - 1e-10 &&
+            y <= Math.max(y1, y2) + 1e-10
+        );
+    }
+
+    function pointInRing(point, ring) {
+        let inside = false;
+
+        for (
+            let i = 0, j = ring.length - 1;
+            i < ring.length;
+            j = i++
+        ) {
+            const a = ring[j];
+            const b = ring[i];
+
+            if (pointOnSegment(point, a, b)) {
+                return true;
+            }
+
+            const intersects =
+                ((b[1] > point[1]) !==
+                 (a[1] > point[1])) &&
+                (
+                    point[0] <
+                    (a[0] - b[0]) *
+                    (point[1] - b[1]) /
+                    ((a[1] - b[1]) || 1e-20) +
+                    b[0]
+                );
+
+            if (intersects) {
+                inside = !inside;
+            }
+        }
+
+        return inside;
+    }
+
+    function pointInPolygonCoordinates(point, rings) {
+        if (!rings || rings.length === 0) {
+            return false;
+        }
+
+        // First ring is the exterior boundary.
+        if (!pointInRing(point, rings[0])) {
+            return false;
+        }
+
+        // Subsequent rings are holes.
+        for (let i = 1; i < rings.length; i++) {
+            if (pointInRing(point, rings[i])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function pointInGeometry(point, geometry) {
+        if (!geometry) {
+            return false;
+        }
+
+        const coordinates = geometry.coordinates;
+
+        switch (geometry.type) {
+            case 'Polygon':
+                return pointInPolygonCoordinates(
+                    point,
+                    coordinates
+                );
+
+            case 'MultiPolygon':
+                return coordinates.some(function (polygon) {
+                    return pointInPolygonCoordinates(
+                        point,
+                        polygon
+                    );
                 });
 
-                // Add the legend with counts
-                var legend = L.control({ position: 'bottomright' });
+            case 'GeometryCollection':
+                return (geometry.geometries || []).some(
+                    function (childGeometry) {
+                        return pointInGeometry(
+                            point,
+                            childGeometry
+                        );
+                    }
+                );
 
-                legend.onAdd = function () {
-                    var div = L.DomUtil.create('div', 'legend');
-                    div.innerHTML = `
-                        <div><b>Death Percentage Legend</b></div>
-                        <table>
-                            <tr>
-                                <th>SNCU</th>
-                                <th>Count</th>
-                            </tr>
-                            <tr>
-                                <td><i style="background: #00FF00"></i> 0.01 - 4.7%</td>
-                                <td style="text-align: right;">${categoryCounts['green']}</td>
-                            </tr>
-                            <tr>
-                                <td><i style="background: #FFFF00"></i> 4.71 - 10.0%</td>
-                                <td style="text-align: right;">${categoryCounts['yellow']}</td>
-                            </tr>
-                            <tr>
-                                <td><i style="background: #FF0000"></i> > 10.0%</td>
-                                <td style="text-align: right;">${categoryCounts['red']}</td>
-                            </tr>
-                        </table>
-                    `;
-                    return div;
-                };
+            default:
+                return false;
+        }
+    }
 
-                legend.addTo(map);
+
+    // =========================================================
+    // 11. POPUP SHOWING ALL FEATURE ATTRIBUTES
+    // =========================================================
+
+    function createFeaturePopup(feature) {
+        const properties = feature.properties || {};
+
+        let rows = '';
+
+        Object.keys(properties).forEach(function (key) {
+            const value = properties[key];
+
+            if (
+                value === null ||
+                value === undefined ||
+                value === ''
+            ) {
+                return;
+            }
+
+            rows +=
+                '<tr>' +
+                    '<th>' + escapeHtml(key) + '</th>' +
+                    '<td>' + escapeHtml(value) + '</td>' +
+                '</tr>';
+        });
+
+        if (!rows) {
+            rows =
+                '<tr><td colspan="2">No attributes available</td></tr>';
+        }
+
+        return (
+            '<div class="sncu-popup">' +
+                '<h3>SNCU Pincode Information</h3>' +
+                '<table>' + rows + '</table>' +
+            '</div>'
+        );
+    }
+
+
+    // =========================================================
+    // 12. WFS GETFEATURE ON HOVER
+    // =========================================================
+
+    async function getFeatureAtPoint(latlng) {
+        if (!sncuFeatureType) {
+            return;
+        }
+
+        // Cancel the previous request if the pointer moves.
+        if (hoverRequestController) {
+            hoverRequestController.abort();
+        }
+
+        hoverRequestController = new AbortController();
+
+        const controller = hoverRequestController;
+
+        const minLon = latlng.lng - HOVER_RADIUS;
+        const minLat = latlng.lat - HOVER_RADIUS;
+        const maxLon = latlng.lng + HOVER_RADIUS;
+        const maxLat = latlng.lat + HOVER_RADIUS;
+
+        const params = new URLSearchParams({
+            service: 'WFS',
+            version: '2.0.0',
+            request: 'GetFeature',
+            typeNames: sncuFeatureType,
+            outputFormat: 'application/json',
+            srsName: 'EPSG:4326',
+            count: '30',
+            bbox: [
+                minLon,
+                minLat,
+                maxLon,
+                maxLat,
+                'EPSG:4326'
+            ].join(',')
+        });
+
+        const requestUrl =
+            WFS_URL + '?' + params.toString();
+
+        try {
+            const response = await fetch(requestUrl, {
+                signal: controller.signal
+            });
+
+            if (!response.ok) {
+                throw new Error(
+                    'WFS GetFeature HTTP error: ' +
+                    response.status
+                );
+            }
+
+            const responseText = await response.text();
+
+            // GeoServer may return XML for an exception even
+            // when the request was expected to return GeoJSON.
+            if (
+                responseText.trim().startsWith('<') &&
+                !responseText.trim().startsWith('{')
+            ) {
+                console.error(
+                    'WFS returned XML/HTML instead of GeoJSON:',
+                    responseText.substring(0, 1000)
+                );
+
+                throw new Error(
+                    'WFS returned an exception instead of GeoJSON.'
+                );
+            }
+
+            const geojson = JSON.parse(responseText);
+
+            if (!geojson.features) {
+                console.warn(
+                    'WFS response contains no features:',
+                    geojson
+                );
+
+                return;
+            }
+
+            const point = [
+                latlng.lng,
+                latlng.lat
+            ];
+
+            // BBOX retrieves nearby candidates. Check each candidate's
+            // actual polygon before showing its attributes.
+            const feature = geojson.features.find(
+                function (candidate) {
+                    return pointInGeometry(
+                        point,
+                        candidate.geometry
+                    );
+                }
+            );
+
+            if (!feature) {
+                if (activeHighlight) {
+                    map.removeLayer(activeHighlight);
+                    activeHighlight = null;
+                }
+
+                return;
+            }
+
+            // Remove the previous highlight.
+            if (activeHighlight) {
+                map.removeLayer(activeHighlight);
+            }
+
+            // Highlight the selected feature without replacing
+            // the original WMS layers.
+            activeHighlight = L.geoJSON(feature, {
+                style: highlightStyle,
+                interactive: false
+            }).addTo(map);
+
+            // Display all non-empty feature attributes.
+            L.popup({
+                maxWidth: 380,
+                maxHeight: 350,
+                autoPan: true
             })
-            .catch(error => console.error('Error fetching point data:', error));
+                .setLatLng(latlng)
+                .setContent(createFeaturePopup(feature))
+                .openOn(map);
+
+        } catch (error) {
+            if (error.name === 'AbortError') {
+                return;
+            }
+
+            console.error('WFS hover error:', error);
+            setStatus(
+                'WFS error. Check the browser console.'
+            );
+        }
+    }
+
+
+    // =========================================================
+    // 13. HOVER EVENT
+    // =========================================================
+
+    map.on('mousemove', function (event) {
+        if (!sncuFeatureType) {
+            return;
+        }
+
+        // Avoid repeating the same request at almost identical points.
+        const key = [
+            event.latlng.lat.toFixed(4),
+            event.latlng.lng.toFixed(4)
+        ].join(',');
+
+        if (key === lastHoverKey) {
+            return;
+        }
+
+        lastHoverKey = key;
+
+        if (hoverTimer) {
+            clearTimeout(hoverTimer);
+        }
+
+        // Throttle requests while the pointer moves.
+        hoverTimer = setTimeout(function () {
+            getFeatureAtPoint(event.latlng);
+        }, 350);
+    });
+
+
+    // Close the hover popup and remove the highlight when leaving
+    // the map. The WMS boundary layers remain visible.
+    map.on('mouseout', function () {
+        if (hoverTimer) {
+            clearTimeout(hoverTimer);
+        }
+
+        if (hoverRequestController) {
+            hoverRequestController.abort();
+        }
+
+        lastHoverKey = '';
+
+        map.closePopup();
+
+        if (activeHighlight) {
+            map.removeLayer(activeHighlight);
+            activeHighlight = null;
+        }
+    });
+
+
+    // =========================================================
+    // 14. INITIALIZE WFS
+    // =========================================================
+
+    discoverSNCUFeatureType()
+        .then(function () {
+            console.log(
+                'West Bengal SNCU map initialized with WMS boundaries ' +
+                'and WFS hover information.'
+            );
+        })
+        .catch(function (error) {
+            console.error(
+                'Could not initialize SNCU WFS:',
+                error
+            );
+
+            setStatus(
+                'WMS map loaded; WFS hover unavailable. ' +
+                'Check the browser console.'
+            );
+        });
+
     </script>
+
 </body>
 </html>
